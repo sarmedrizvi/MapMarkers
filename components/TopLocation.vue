@@ -16,28 +16,41 @@
           name="flavour-1"
         ></b-form-checkbox-group>
       </b-form-group>
-      <b-card-text>{{loadingMarker}}</b-card-text>
+      <b-card-text>{{ loadingMarker }}</b-card-text>
       <b-button href="#" variant="primary" @click="addMarkers">Locate</b-button>
+      <b-button ref="mar" v-b-toggle.sidebar-right style="display:none"></b-button>
+      <b-sidebar id="sidebar-right" title="Profile" right shadow><side-bar/></b-sidebar>
     </b-card>
     <b-card bg-variant="gray" text-variant="black" title="Map">
       <GmapMap
         id="map"
         ref="mapRef"
-        :center="{lat:latitude, lng:longitude}"
+        :center="{ lat: latitude, lng: longitude }"
         :zoom="16"
         map-type-id="terrain"
         style="width: 100%; height: 300px;"
-      
       >
         <GmapMarker
           v-for="(m, index) in markers"
           :key="index"
-          :position="google && new google.maps.LatLng(m.position.lat, m.position.lng)"
+          :position="
+            google && new google.maps.LatLng(m.position.lat, m.position.lng)
+          "
           :clickable="true"
           :draggable="true"
-          @click="center=m.position"
-          style="color:blue"
+          @click="$refs.mar.click()"
+          @mouseover="markersHover(m, index)"
+          @mouseout="markerLeave"
         />
+
+        <gmap-info-window
+          :options="infoOptions"
+          :position="infoWindowPos"
+          :opened="infoWinOpen"
+          @closeclick="infoWinOpen = false"
+        >
+          <div v-html="infoContent"></div>
+        </gmap-info-window>
       </GmapMap>
     </b-card>
   </div>
@@ -45,7 +58,12 @@
 
 <script>
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
+import { db } from "../plugins/firebase";
+import sideBar from './SideBar'
 export default {
+  components: {
+    sideBar,
+  },
   data() {
     return {
       selected: [], // Must be an array reference!
@@ -53,13 +71,45 @@ export default {
       latitude: "",
       longitude: "",
       loadingMarker: "",
-      types: ["Atm", "Gym","Bank","Medicines","Hospital","Health"],
+      types: ["atm", "gym", "bank", "medicines", "hospital", "health"],
       address: "",
       markers: [],
-      location: ""
+      location: "",
+      infoContent: "",
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     };
   },
   methods: {
+    markersHover(marker, idx) {
+      // console.log(marker);
+      this.infoContent = "loading...";
+      this.infoWindowPos = marker.position;
+
+      this.fireBaseStore(marker, idx);
+
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    markerLeave() {
+      this.infoWinOpen = false;
+    },
     showPosition(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
@@ -82,40 +132,30 @@ export default {
         })
         .catch(console.log);
     },
-    // callback(results, status) {
-    //   if (status == google.maps.places.PlacesServiceStatus.OK) {
-    //     console.log(results[0]);
-    //     results.map(marker => {
-    //       console.log(
-    //         marker.geometry.location.lat(),
-    //         marker.geometry.location.lng()
-    //       );
-    //       this.markers.push({
-    //         position: {
-    //           lat: marker.geometry.location.lat(),
-    //           lng: marker.geometry.location.lng()
-    //         }
-    //       });
-    //     });
-    //   }
-    // },
+    getInfoWindowContent: function(marker) {
+      return `<div class="">
+          <div>
+            <div>
+              <div class="m-2"><span style="font-weight: bold;">Name: </span>
+                ${marker.name}
+              </div>
+            </div>
+            <div class="m-2"><span style="font-weight: bold;">Views:  </span>
+              ${marker.views}
+              <br>
+            </div>
+             <div class="m-2"><span style="font-weight: bold;">likes:  </span>
+              ${marker.likes}
+              <br>
+            </div>
+             <div class="m-2"><span style="font-weight: bold;">Coupons:  </span>
+              ${marker.coupons}
+              <br>
+            </div>
+          </div>
+        </div>`;
+    },
     addMarkers() {
-      //   this.location = new google.maps.LatLng(this.latitude, this.longitude);
-      //   const request = {
-      //     location: this.location,
-      //     radius: "1000",
-      //     types: ["atm"],
-      //     fields: ["name", "geometry"]
-      //   };
-
-      //   const infowindow = new google.maps.InfoWindow();
-      //   const map = new google.maps.Map(document.getElementById("map"), {
-      //     center: this.location,
-      //     zoom: 15
-      //   });
-
-      //   var service = new google.maps.places.PlacesService(map);
-      //   service.nearbySearch(request, this.callback);
       console.log(this.selected);
       this.markers = [];
       const request = {
@@ -142,7 +182,9 @@ export default {
                   position: {
                     lat: marker.geometry.location.lat,
                     lng: marker.geometry.location.lng
-                  }
+                  },
+                  name: marker.name,
+                  id: marker.id
                 });
                 this.loadingMarker = "Markers are Added";
               });
@@ -156,11 +198,44 @@ export default {
         this.loadingMarker = "";
         this.markers = [];
       }
+    },
+    fireBaseStore(marker, idx) {
+      db.ref("/" + marker.id).once("value", snapshot => {
+        if (snapshot.val()) {
+          db.ref("/" + marker.id)
+            .update({
+              views: snapshot.val().views + 1
+            })
+            .then(() => {
+              this.getMarkerData(marker.id, idx);
+            });
+        } else {
+          db.ref("/" + marker.id)
+            .set({
+              views: parseInt(500 + Math.random() * 1000),
+              likes: parseInt(300 + Math.random() * 400),
+              coupons: parseInt(30 + Math.random() * 200)
+            })
+            .then(() => {
+              this.getMarkerData(marker.id, idx);
+            });
+        }
+      });
+    },
+    getMarkerData(id, idx) {
+      db.ref("/" + id)
+        .once("value")
+        .then(snapshot => {
+          // console.log({ ...this.markers[idx], ...snapshot.val() })
+          this.markers[idx] = { ...this.markers[idx], ...snapshot.val() };
+          this.infoContent = this.getInfoWindowContent(this.markers[idx]);
+        });
     }
   },
   computed: {
     google: gmapApi
   },
+  created() {},
   mounted() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.showPosition);
@@ -170,5 +245,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

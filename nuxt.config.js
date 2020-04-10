@@ -28,7 +28,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/vue2-location"}],
+  plugins: [{ src: "~/plugins/vue2-location" }],
   /*
    ** Nuxt.js dev-modules
    */
@@ -38,7 +38,8 @@ export default {
    */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    "bootstrap-vue/nuxt"
+    "bootstrap-vue/nuxt",
+
   ],
   /*
    ** Build configuration
