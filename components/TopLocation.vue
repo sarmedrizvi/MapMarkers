@@ -18,8 +18,10 @@
       </b-form-group>
       <b-card-text>{{ loadingMarker }}</b-card-text>
       <b-button href="#" variant="primary" @click="addMarkers">Locate</b-button>
-      <b-button ref="mar" v-b-toggle.sidebar-right style="display:none"></b-button>
-      <b-sidebar id="sidebar-right" title="Profile" right shadow><side-bar/></b-sidebar>
+      <b-button ref="markButton" v-b-toggle.sidebar-right style="display:none"></b-button>
+      <b-sidebar id="sidebar-right" title="Profile" right shadow style="width:500px">
+        <side-bar :sideBar="sideBarData" />
+      </b-sidebar>
     </b-card>
     <b-card bg-variant="gray" text-variant="black" title="Map">
       <GmapMap
@@ -28,7 +30,7 @@
         :center="{ lat: latitude, lng: longitude }"
         :zoom="16"
         map-type-id="terrain"
-        style="width: 100%; height: 300px;"
+        style="width: 100%; height: 400px;"
       >
         <GmapMarker
           v-for="(m, index) in markers"
@@ -38,7 +40,7 @@
           "
           :clickable="true"
           :draggable="true"
-          @click="$refs.mar.click()"
+          @click="()=> {$refs.markButton.click(m); sideBarOpen(m)}"
           @mouseover="markersHover(m, index)"
           @mouseout="markerLeave"
         />
@@ -59,10 +61,10 @@
 <script>
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
 import { db } from "../plugins/firebase";
-import sideBar from './SideBar'
+import sideBar from "./SideBar";
 export default {
   components: {
-    sideBar,
+    sideBar
   },
   data() {
     return {
@@ -87,10 +89,23 @@ export default {
           width: 0,
           height: -35
         }
+      },
+      sideBarData: {
+        picture: "",
+        types: ""
       }
     };
   },
   methods: {
+    sideBarOpen(m) {
+      this.sideBarData = {
+        ...this.sideBarData,
+        types: m.types,
+        name: m.name,
+        picture: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${m.pictureRef}&key=${this.$myApi}`,
+        location: m.location
+      };
+    },
     markersHover(marker, idx) {
       // console.log(marker);
       this.infoContent = "loading...";
@@ -184,7 +199,12 @@ export default {
                     lng: marker.geometry.location.lng
                   },
                   name: marker.name,
-                  id: marker.id
+                  id: marker.id,
+                  types: marker.types[0],
+                  pictureRef: marker.photos
+                    ? marker.photos[0].photo_reference
+                    : null,
+                  location: marker.vicinity
                 });
                 this.loadingMarker = "Markers are Added";
               });
