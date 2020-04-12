@@ -16,13 +16,16 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-img :src="picture" height="194"></v-img>
+    <v-img
+      :src="data.picture"
+      height="194"
+    ></v-img>
     <div class="d-flex justify-content-between py-0 px-2">
       <div>
-        <v-btn icon @click="heartFill=!heartFill">
-          <v-icon
-            :class="heartFill ? 'text-danger': ''"
-          >{{heartFill ? "mdi-heart":"mdi-heart-outline"}}</v-icon>
+        <v-btn icon @click="heartFill = !heartFill">
+          <v-icon :class="heartFill ? 'text-danger' : ''">{{
+            heartFill ? "mdi-heart" : "mdi-heart-outline"
+          }}</v-icon>
         </v-btn>
 
         <v-btn icon>
@@ -36,13 +39,22 @@
         <v-icon>mdi-bookmark-outline</v-icon>
       </v-btn>
     </div>
-    <v-card-text class="text-danger py-0 px-3 font-weight-bold">123,232 likes</v-card-text>
-    <v-card-text
-      class="py-0 px-3"
-    >Visit ten places on our planet that are undergoing the biggest changes today.</v-card-text>
-    <v-card-text class="text-5 py-1 text-black-50" style="cursor:pointer">View all comments</v-card-text>
+    <v-card-text class="text-danger py-0 px-3 font-weight-bold"
+      >{{ data.social.likes }} likes</v-card-text
+    >
+    <v-card-text class="py-0 px-3"
+      >Visit ten places on our planet that are undergoing the biggest changes
+      today.</v-card-text
+    >
+    <v-card-text class="text-5 py-1 text-black-50" style="cursor:pointer"
+      >View all comments</v-card-text
+    >
     <v-card-actions>
-      <b-form-input v-model="comment" placeholder="Add a comment" size="sm"></b-form-input>
+      <b-form-input
+        v-model="comment"
+        placeholder="Add a comment"
+        size="sm"
+      ></b-form-input>
 
       <v-spacer></v-spacer>
     </v-card-actions>
@@ -52,7 +64,7 @@
 <script>
 export default {
   props: {
-    picture: String
+    data: Object
   },
   data() {
     return {
@@ -63,5 +75,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

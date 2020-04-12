@@ -34,7 +34,7 @@ export default {
   height: 50px;
   cursor: pointer;
   border-radius: 1px;
-  border: 1px solid rgb(153, 29, 29);
+  border: 1px solid rgb(185, 31, 31);
 }
 .icon {
   height: 100%;

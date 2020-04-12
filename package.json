@@ -11,12 +11,15 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.11.0",
     "firebase": "^7.14.0",
     "nuxt": "^2.0.0",
     "vue": "^2.6.11",
-    "vue2-google-maps": "^0.10.7"
+    "vue-loading-overlay": "^3.3.2",
+    "vue2-google-maps": "^0.10.7",
+    "vuebar": "0.0.20"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.0"

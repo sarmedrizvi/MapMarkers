@@ -7,6 +7,7 @@
       sub-title="Live"
       style="margin:5px 0px"
     >
+      <loading :isLoading="isloading" />
       <b-card-text>{{ address }}</b-card-text>
       <b-form-group>
         <b-form-checkbox-group
@@ -17,11 +18,34 @@
         ></b-form-checkbox-group>
       </b-form-group>
       <b-card-text>{{ loadingMarker }}</b-card-text>
-      <b-button href="#" variant="primary" @click="addMarkers">Locate</b-button>
-      <b-button ref="markButton" v-b-toggle.sidebar-right style="display:none"></b-button>
-      <b-sidebar id="sidebar-right" title="Profile" right shadow style="width:500px">
-        <side-bar :sideBar="sideBarData" />
+      <b-button href="#" variant="info" @click="addMarkers">Locate</b-button>
+      <b-button
+        ref="markButton"
+        v-b-toggle.sidebar-right
+        style="display:none"
+      ></b-button>
+      <b-sidebar
+        id="sidebar-right"
+        title="Profile"
+        right
+        shadow
+        style="width:500px"
+      >
+        <div v-bar class="vuebar-location">
+          <div>
+            <side-bar :sideBar="sideBarData" />
+          </div>
+        </div>
       </b-sidebar>
+      <b-toast
+        id="error-toast"
+        variant="warning"
+        title="Network Issue"
+        
+        no-auto-hide
+      >
+        Something Went Wrong
+      </b-toast>
     </b-card>
     <b-card bg-variant="gray" text-variant="black" title="Map">
       <GmapMap
@@ -40,7 +64,12 @@
           "
           :clickable="true"
           :draggable="true"
-          @click="()=> {$refs.markButton.click(m); sideBarOpen(m)}"
+          @click="
+            () => {
+              $refs.markButton.click(m);
+              sideBarOpen(m, index);
+            }
+          "
           @mouseover="markersHover(m, index)"
           @mouseout="markerLeave"
         />
@@ -59,23 +88,36 @@
 </template>
 
 <script>
+import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
 import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
 import temp from "./Skeleton";
+import axios from "axios";
 export default {
   components: {
     sideBar,
-    temp
+    temp,
+    loading
   },
   data() {
     return {
+      hide: false,
+      isloading: false,
       selected: [], // Must be an array reference!
       liveLocation: "",
       latitude: "",
       longitude: "",
       loadingMarker: "",
-      types: ["atm", "gym", "bank", "medicines", "hospital", "health"],
+      types: [
+        { text: "Restaurant", value: "restaurant" },
+        { text: "Gym", value: "gym" },
+        { text: "Hospital", value: "hospital" },
+        { text: "Medicine", value: "medicine" },
+        { text: "Food", value: "food" },
+        { text: "Education", value: "education" },
+        
+      ],
       address: "",
       markers: [],
       location: "",
@@ -94,20 +136,31 @@ export default {
       },
       sideBarData: {
         picture: "",
-        types: ""
+        types: "",
+        social: {
+          likes: "",
+          views: "",
+          coupons: ""
+        }
       },
       loading: true,
       transition: "scale-transition"
     };
   },
   methods: {
-    sideBarOpen(m) {
+    sideBarOpen(m, id) {
+      const data = this.markers[id];
       this.sideBarData = {
         ...this.sideBarData,
-        types: m.types,
-        name: m.name,
-        picture: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${m.pictureRef}&key=${this.$myApi}`,
-        location: m.location
+        types: data.types,
+        name: data.name,
+        picture: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${data.pictureRef}&key=${this.$myApi}`,
+        location: data.location,
+        social: {
+          likes: data.likes,
+          views: data.views,
+          coupons: data.coupons
+        }
       };
     },
     markersHover(marker, idx) {
@@ -185,18 +238,48 @@ export default {
         api: this.$myApi
       };
       if (this.selected.length != 0) {
+        this.isloading = true;
         this.loadingMarker = "Loading...";
-        fetch(
-          `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}`
-        )
-          .then(res => res.json())
+        axios
+          .get(
+            `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}`
+          )
           .then(data => {
-            if (data.error_message) {
-              console.log(data.error_message);
+            if (data.data.error_message) {
+              this.isloading = false;
+              this.$bvToast.show("error-toast");
+              console.log(data.data.error_message);
               this.loadingMarker = "Something Went Wrong";
             } else {
+              this.isloading = false;
               console.log(data);
-              data.results.map(marker => {
+              if (data.data.next_page_token) {
+                console.log("it has next");
+                axios
+                  .get(
+                    `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}&pagetoken=${data.data.next_page_token}
+`
+                  )
+                  .then(marker => {
+                    data.data.results.map(marker => {
+                      this.markers.push({
+                        position: {
+                          lat: marker.geometry.location.lat,
+                          lng: marker.geometry.location.lng
+                        },
+                        name: marker.name,
+                        id: marker.id,
+                        types: marker.types[0],
+                        pictureRef: marker.photos
+                          ? marker.photos[0].photo_reference
+                          : null,
+                        location: marker.vicinity
+                      });
+                      this.loadingMarker = "Markers are Added";
+                    });
+                  });
+              }
+              data.data.results.map(marker => {
                 this.markers.push({
                   position: {
                     lat: marker.geometry.location.lat,
@@ -216,6 +299,8 @@ export default {
           })
           .catch(err => {
             console.log(err);
+            this.isloading = false;
+            this.$bvToast.show("error-toast");
             this.loadingMarker = "Something is Wrong";
           });
       } else {
@@ -269,4 +354,11 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.vuebar-location {
+  height: 100%;
+  width: 100%;
+  max-width: 500px;
+  background: white;
+}
+</style>

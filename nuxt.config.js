@@ -28,7 +28,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/vue2-location" }],
+  plugins: [{ src: "~/plugins/vue2-location" },'~/plugins/vue-bar'],
   /*
    ** Nuxt.js dev-modules
    */
