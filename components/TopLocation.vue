@@ -62,9 +62,11 @@
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
 import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
+import temp from "./Skeleton";
 export default {
   components: {
-    sideBar
+    sideBar,
+    temp
   },
   data() {
     return {
@@ -93,7 +95,9 @@ export default {
       sideBarData: {
         picture: "",
         types: ""
-      }
+      },
+      loading: true,
+      transition: "scale-transition"
     };
   },
   methods: {
@@ -108,7 +112,7 @@ export default {
     },
     markersHover(marker, idx) {
       // console.log(marker);
-      this.infoContent = "loading...";
+      this.infoContent = ` loading...`;
       this.infoWindowPos = marker.position;
 
       this.fireBaseStore(marker, idx);
@@ -189,7 +193,7 @@ export default {
           .then(data => {
             if (data.error_message) {
               console.log(data.error_message);
-              this.loadingMarker = "Something is Wrong";
+              this.loadingMarker = "Something Went Wrong";
             } else {
               console.log(data);
               data.results.map(marker => {

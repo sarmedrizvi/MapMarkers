@@ -1,13 +1,36 @@
-<template>
-  
+
+  <template>
+  <b-media tag="li">
+    <template v-slot:aside>
+      <v-avatar>
+        <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+      </v-avatar>
+    </template>
+    <div class="d-flex justify-content-between">
+      <div>
+        <h5 class="mt-0 mb-1 text-danger text-5">Nicole Woods</h5>
+        <p
+          class="mb-0 font-weight-light text-break m-0"
+        >Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</p>
+      </div>
+      <div class="text-danger " >
+        <p class="m-0">12:45PM</p>
+        <div class="d-flex">
+          <v-icon class="text-danger" style="cursor:pointer">mdi-share-circle</v-icon>
+          <v-icon class="text-danger" style="cursor:pointer">mdi-heart</v-icon>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </b-media>
+</template>
 </template>
 
 <script>
 export default {
-
-}
+  data: () => ({})
+};
 </script>
 
 <style>
-
 </style>
