@@ -1,22 +1,16 @@
-const state={
+const state = {
+  markers: []
+};
 
-}
+const getters = {};
 
-const getters={
+const mutations = {};
 
-}
-
-const mutations={
-
-}
-
-const actions={
-
-}
+const actions = {};
 
 export default {
-    state,
-    mutations,
-    actions,
-    getters
-}
+  state,
+  mutations,
+  actions,
+  getters
+};
