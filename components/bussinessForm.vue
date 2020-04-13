@@ -94,17 +94,24 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       //   alert(JSON.stringify(this.form));
-      const bussinessFormRef = db.ref("/BussinessForm");
-      bussinessFormRef
-        .push({
-          ...this.form
-        })
-        .then(() => {
-          this.form.email = "";
-          this.form.fName = "";
-          this.form.lName = "";
-          this.form.phone = "";
-        });
+      const bussinessFormRef = db.ref(`/${this.sideBar.id}/BussinessDetails`);
+      bussinessFormRef.once("value", snapshot => {
+        if (snapshot.val()) {
+          alert("You are already Registered");
+        } else {
+          bussinessFormRef
+            .set({
+              ...this.form
+            })
+            .then(() => {
+              alert('You are registered')
+              this.form.email = "";
+              this.form.fName = "";
+              this.form.lName = "";
+              this.form.phone = "";
+            });
+        }
+      });
     },
     onReset(evt) {
       evt.preventDefault();

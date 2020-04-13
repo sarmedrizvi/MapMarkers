@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --hostname 185.247.119.182 --port 3331",
     "generate": "nuxt generate"
   },
   "dependencies": {

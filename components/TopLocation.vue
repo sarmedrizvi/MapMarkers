@@ -36,10 +36,14 @@
             <side-bar
               :sideBar="sideBarData"
               :isSideBar="isSideBar"
-              @updateClick="() => (isSideBar = false) "
+              @updateClick="() => (isSideBar = false)"
               v-if="isSideBar"
             />
-            <bussinessForm v-else @updateClick="() => (isSideBar = true) "  :sideBar="sideBarData" />
+            <bussinessForm
+              v-else
+              @updateClick="() => (isSideBar = true)"
+              :sideBar="sideBarData"
+            />
           </div>
         </div>
       </b-sidebar>
@@ -95,7 +99,7 @@
 <script>
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
-  import { db } from "../plugins/firebase";
+import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
 import temp from "./Skeleton";
 import bussinessForm from "./bussinessForm";
@@ -167,7 +171,8 @@ export default {
           likes: data.likes,
           views: data.views,
           coupons: data.coupons
-        }
+        },
+        id: data.id
       };
     },
     markersHover(marker, idx) {
