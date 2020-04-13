@@ -1,19 +1,18 @@
-import * as firebase from 'firebase';
-import "firebase/database"
+import * as firebase from "firebase";
+import "firebase/database";
 var firebaseConfig = {
-apiKey: "AIzaSyB7QPTH_3jMBfomyrrXTxvR6jaK-ZbTebA",
-authDomain: "maps-81d0d.firebaseapp.com",
-databaseURL: "https://maps-81d0d.firebaseio.com",
-projectId: "maps-81d0d",
-storageBucket: "maps-81d0d.appspot.com",
-messagingSenderId: "847130352877",
-appId: "1:847130352877:web:86504a978045c35054c0e4",
-measurementId: "G-RGRE6KFCC6"
+  apiKey: "AIzaSyAyGe1aYA8PS08SZ6At1uyAoXhVORtplqA",
+  authDomain: "map-nuxtjs.firebaseapp.com",
+  databaseURL: "https://map-nuxtjs.firebaseio.com",
+  projectId: "map-nuxtjs",
+  storageBucket: "map-nuxtjs.appspot.com",
+  messagingSenderId: "326348824160",
+  appId: "1:326348824160:web:8b14886daa2ea9dd286d05",
+  measurementId: "G-KYG2GLKGN8"
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 }
 
-
-export const db=firebase.database();
+export const db = firebase.database();

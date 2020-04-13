@@ -5,12 +5,24 @@
         <v-icon style="color:red;">mdi-map-marker</v-icon>
         {{ sideBar.location }}
       </p>
+
       <b-tabs card end v-model="tabIndex" content-class="tabs" fill>
         <b-tab :title-link-class="linkClass(0)" title="Wall">
           <div class="vuebar-element" v-bar>
-            <div>
-              <card :data="sideBar" v-for="i in 3" :key="i" />
-            </div>
+            <!-- <div> -->
+            <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
+
+            <iframe
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=400&height=350&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
+              width="400"
+              height="350"
+              style="border:none;overflow:hidden"
+              scrolling="no"
+              frameborder="0"
+              allowTransparency="true"
+              allow="encrypted-media"
+            ></iframe>
+            <!-- </div> -->
           </div>
         </b-tab>
         <b-tab :title-link-class="linkClass(1)" title="Feedback">
@@ -60,6 +72,9 @@
           <coupon price="$200" type="Platinum" />
         </div>
       </b-card>
+      <div class="d-flex justify-content-center">
+        <b-button @click="$emit('updateClick')">Claim your bussiness</b-button>
+      </div>
     </b-card>
   </div>
 </template>
@@ -94,6 +109,9 @@ export default {
   props: {
     sideBar: {
       type: Object
+    },
+    isSideBar: {
+      type: Boolean
     }
   },
   computed: {}

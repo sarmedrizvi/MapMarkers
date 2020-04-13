@@ -26,14 +26,20 @@
       ></b-button>
       <b-sidebar
         id="sidebar-right"
-        title="Profile"
+        title="Dashboard"
         right
         shadow
         style="width:500px"
       >
         <div v-bar class="vuebar-location">
           <div>
-            <side-bar :sideBar="sideBarData" />
+            <side-bar
+              :sideBar="sideBarData"
+              :isSideBar="isSideBar"
+              @updateClick="() => (isSideBar = false) "
+              v-if="isSideBar"
+            />
+            <bussinessForm v-else @updateClick="() => (isSideBar = true) "  :sideBar="sideBarData" />
           </div>
         </div>
       </b-sidebar>
@@ -41,7 +47,6 @@
         id="error-toast"
         variant="warning"
         title="Network Issue"
-        
         no-auto-hide
       >
         Something Went Wrong
@@ -90,18 +95,21 @@
 <script>
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
-import { db } from "../plugins/firebase";
+  import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
 import temp from "./Skeleton";
+import bussinessForm from "./bussinessForm";
 import axios from "axios";
 export default {
   components: {
     sideBar,
     temp,
-    loading
+    loading,
+    bussinessForm
   },
   data() {
     return {
+      isSideBar: true,
       hide: false,
       isloading: false,
       selected: [], // Must be an array reference!
@@ -115,8 +123,7 @@ export default {
         { text: "Hospital", value: "hospital" },
         { text: "Medicine", value: "medicine" },
         { text: "Food", value: "food" },
-        { text: "Education", value: "education" },
-        
+        { text: "Education", value: "education" }
       ],
       address: "",
       markers: [],
