@@ -1,16 +1,16 @@
-const state = {
-  markers: []
-};
+// const state = {
+//   markers: []
+// };
 
-const getters = {};
+// const getters = {};
 
-const mutations = {};
+// const mutations = {};
 
-const actions = {};
+// const actions = {};
 
-export default {
-  state,
-  mutations,
-  actions,
-  getters
-};
+// export default {
+//   state,
+//   mutations,
+//   actions,
+//   getters
+// };

@@ -1,12 +1,11 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-// import marker from './modules/markerData'
+// import Vue from "vue";
+// import Vuex from "vuex";
+// // import marker from './modules/markerData'
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
 
-
-export const store = new Vuex.Store({
-    modules: {
-        // marker
-    }
-});
+// export const store = new Vuex.Store({
+//   modules: {
+//     // marker
+//   }
+// });
