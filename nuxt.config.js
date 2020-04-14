@@ -47,7 +47,7 @@ export default {
    ** Build configuration
    */
   build: {
-    transpile:['vuetify/lib'],
+    
    
     /*
      ** You can extend webpack config here

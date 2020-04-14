@@ -39,6 +39,7 @@ export default {
 .icon {
   height: 100%;
   padding: 10px 5px;
+  width: 40%;
   background-color: rgb(226, 19, 19);
   color: white;
   text-align: center;

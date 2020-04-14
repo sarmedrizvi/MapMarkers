@@ -1,15 +1,21 @@
 <template>
-  <div style="margin: 0px 20px">
-    <b-card
-      bg-variant="dark"
-      text-variant="white"
-      title="Location"
-      sub-title="Live"
-      style="margin:5px 0px"
-    >
+  <div style="">
+    <b-card style="background-color:#f5393a" text-variant="white">
+      <div class="d-flex justify-content-between">
+        <b-card-title>Live Location</b-card-title>
+        <b-button
+          href="#"
+          variant="light"
+          style="color:#f5393a"
+          class="px-4"
+          @click="addMarkers"
+          >Locate</b-button
+        >
+      </div>
+
       <loading :isLoading="isloading" />
-      <b-card-text>{{ address }}</b-card-text>
-      <b-form-group>
+      <!-- <b-card-text>{{ address }}</b-card-text> -->
+      <!-- <b-form-group>
         <b-form-checkbox-group
           id="checkbox-group-1"
           v-model="selected"
@@ -17,19 +23,39 @@
           name="flavour-1"
         ></b-form-checkbox-group>
       </b-form-group>
-      <b-card-text>{{ loadingMarker }}</b-card-text>
-      <b-button href="#" variant="info" @click="addMarkers">Locate</b-button>
+      <b-card-text>{{ loadingMarker }}</b-card-text> -->
       <b-button
         ref="markButton"
         v-b-toggle.sidebar-right
         style="display:none"
       ></b-button>
+
+      <b-toast
+        id="error-toast"
+        variant="warning"
+        title="Network Issue"
+        no-auto-hide
+      >
+        Something Went Wrong
+      </b-toast>
+    </b-card>
+    <categories
+      :selectedCategories="selected"
+      @SelectedChanged="
+        value => {
+          selected = [...value];
+          addMarkers();
+        }
+      "
+    />
+
+    <div>
       <b-sidebar
         id="sidebar-right"
         title="Dashboard"
         right
         shadow
-        style="width:500px"
+        class="sidebar"
       >
         <div v-bar class="vuebar-location">
           <div>
@@ -47,23 +73,13 @@
           </div>
         </div>
       </b-sidebar>
-      <b-toast
-        id="error-toast"
-        variant="warning"
-        title="Network Issue"
-        no-auto-hide
-      >
-        Something Went Wrong
-      </b-toast>
-    </b-card>
-    <b-card bg-variant="gray" text-variant="black" title="Map">
       <GmapMap
         id="map"
         ref="mapRef"
         :center="{ lat: latitude, lng: longitude }"
         :zoom="16"
         map-type-id="terrain"
-        style="width: 100%; height: 400px;"
+        style="width: 100%; height: 100vh;"
       >
         <GmapMarker
           v-for="(m, index) in markers"
@@ -92,11 +108,12 @@
           <div v-html="infoContent"></div>
         </gmap-info-window>
       </GmapMap>
-    </b-card>
+    </div>
   </div>
 </template>
 
 <script>
+import categories from "./categories";
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
 import { db } from "../plugins/firebase";
@@ -109,7 +126,8 @@ export default {
     sideBar,
     temp,
     loading,
-    bussinessForm
+    bussinessForm,
+    categories
   },
   data() {
     return {
@@ -245,7 +263,7 @@ export default {
       const request = {
         location: this.latitude + "," + this.longitude,
         radius: "1000",
-        types: this.selected,
+        types: this.selected.toString(),
         // fields: ["name", "geometry"],
         api: this.$myApi
       };
@@ -367,6 +385,14 @@ export default {
 };
 </script>
 <style>
+@media screen and (max-width: 500px) {
+  .sidebar {
+    width: 75px;
+  }
+}
+.sidebar {
+  width: 400px;
+}
 .vuebar-location {
   height: 100%;
   width: 100%;
