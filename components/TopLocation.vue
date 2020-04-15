@@ -47,31 +47,6 @@
     />
 
     <div style="position: relative;" class="overflow-hidden">
-      <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        right
-       
-        temporary
-        class="navigate"
-      >
-        <div v-bar class="vuebar-location">
-          <div>
-            <side-bar
-              :sideBar="sideBarData"
-              :isSideBar="isSideBar"
-              @updateClick="() => (isSideBar = false)"
-              v-if="isSideBar"
-            />
-            <bussinessForm
-              v-else
-              @updateClick="() => (isSideBar = true)"
-              :sideBar="sideBarData"
-            />
-          </div>
-        </div>
-      </v-navigation-drawer>
-
       <!-- <b-sidebar
         id="sidebar-right"
         title="Dashboard"
@@ -141,6 +116,29 @@
           <div v-html="infoContent"></div>
         </gmap-info-window>
       </GmapMap>
+      <v-navigation-drawer
+        v-model="drawer"
+        absolute
+        right
+        temporary
+        class="navigate"
+      >
+        <div v-bar class="vuebar-location">
+          <div>
+            <side-bar
+              :sideBar="sideBarData"
+              :isSideBar="isSideBar"
+              @updateClick="() => (isSideBar = false)"
+              v-if="isSideBar"
+            />
+            <bussinessForm
+              v-else
+              @updateClick="() => (isSideBar = true)"
+              :sideBar="sideBarData"
+            />
+          </div>
+        </div>
+      </v-navigation-drawer>
     </div>
     <footerCustom />
   </div>
