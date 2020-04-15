@@ -51,7 +51,7 @@
         v-model="drawer"
         absolute
         right
-        clipped
+       
         temporary
         class="navigate"
       >
@@ -86,7 +86,7 @@
         :center="{ lat: latitude, lng: longitude }"
         :zoom="18"
         map-type-id="terrain"
-        style="width: 100%; height: 100vh;"
+        style="width: 100%; height: 75vh;"
       >
         <gmap-circle
           :center="{ lat: latitude, lng: longitude }"
