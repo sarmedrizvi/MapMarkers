@@ -95,7 +95,7 @@
             fillColor: '#208dfa',
             stroke: 'border',
             strokeColor: 'rgba(74, 164, 255, 0.5)',
-            fillOpacity: 0.8,
+            fillOpacity: 1,
             strokeOpacity: 0.8,
             strokeWeight: 2
           }"
