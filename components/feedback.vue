@@ -10,13 +10,14 @@
       <div>
         <h5 class="mt-0 mb-1 text-danger text-5">Nicole Woods</h5>
         <p
-          class="mb-0 font-weight-light text-break m-0"
+          class="mb-0 font-weight-dark text-break m-0"
+          style="font-size:13px"
         >Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</p>
       </div>
       <div class="text-danger " >
-        <p class="m-0">12:45PM</p>
+        <p class="m-0" style="font-size:13px">12:45PM</p>
         <div class="d-flex">
-          <v-icon class="text-danger" style="cursor:pointer">mdi-share-circle</v-icon>
+          <v-icon  class="text-danger" style="cursor:pointer">mdi-share-circle</v-icon>
           <v-icon class="text-danger" style="cursor:pointer">mdi-heart</v-icon>
         </div>
       </div>

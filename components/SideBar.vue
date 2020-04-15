@@ -1,10 +1,12 @@
 <template>
   <div class="main-content">
-    <b-card :title="sideBar.name" :sub-title="sideBar.types.toUpperCase()">
-      <p class="text-danger font-weight-bold text-10">
+    <v-card>
+      <v-card-title style="font-size:17px">{{ sideBar.name }}</v-card-title>
+      <v-card-subtitle>{{ sideBar.types.toUpperCase() }}</v-card-subtitle>
+      <v-card-text class="text-danger font-weight-bold text-10">
         <v-icon style="color:red;">mdi-map-marker</v-icon>
         {{ sideBar.location }}
-      </p>
+      </v-card-text>
 
       <b-tabs card end v-model="tabIndex" content-class="tabs" fill>
         <b-tab :title-link-class="linkClass(0)" title="Wall">
@@ -13,8 +15,8 @@
             <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
 
             <iframe
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=400&height=350&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
-              width="400"
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=250&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
+              width="300"
               height="350"
               style="border:none;overflow:hidden"
               scrolling="no"
@@ -42,28 +44,43 @@
           </div>
         </b-tab>
       </b-tabs>
-      <b-card>
-        <div style="display:flex;flex-wrap:wrap;justify-content:start">
+      <v-card class="p-1 my-2">
+        <div
+          class="px-2"
+          style="display:flex;flex-wrap:wrap;justify-content:start"
+        >
           <p
-            class="px-2 text-danger font-weight-bold"
-            style="cursor:pointer"
+            class="px-1 text-danger font-weight-bold"
+            style="cursor:pointer;font-size:13px"
             @click="heartFill = !heartFill"
           >
-            <v-icon class="text-danger">{{
+            <v-icon class="text-danger" size="23">{{
               heartFill ? "mdi-heart" : "mdi-heart-outline"
             }}</v-icon
             >Like
           </p>
 
-          <p class="px-2 text-danger font-weight-bold" style="cursor:pointer">
-            <v-icon class="text-danger">mdi-share</v-icon>Share
+          <p
+            class="px-1 text-danger font-weight-bold"
+            style="cursor:pointer;font-size:13px"
+          >
+            <v-icon class="text-danger" size="23">mdi-share</v-icon>Share
           </p>
-          <p class="px-2 text-danger font-weight-bold" style="cursor:pointer">
-            <v-icon class="text-danger">mdi-account-box-outline</v-icon>Contact
+          <p
+            class="px-1 text-danger font-weight-bold"
+            style="cursor:pointer;font-size:13px"
+          >
+            <v-icon class="text-danger" size="23"
+              >mdi-account-box-outline</v-icon
+            >Contact
           </p>
         </div>
-        <b-card-text class="font-weight-bold">Buy Coupons Now</b-card-text>
-        <hr class="w-25 border border border-secondary" />
+        <v-card-text class="py-0 font-weight-bolder"
+          >Buy Coupons Now</v-card-text
+        >
+        <v-card-text
+          ><hr class=" py-0 w-25 border border border-secondary"
+        /></v-card-text>
 
         <div class="coupons">
           <coupon price="$20" type="Bronze" />
@@ -71,11 +88,11 @@
           <coupon price="$100" type="Gold" />
           <coupon price="$200" type="Platinum" />
         </div>
-      </b-card>
+      </v-card>
       <div class="d-flex justify-content-center">
         <b-button @click="$emit('updateClick')">Claim your bussiness</b-button>
       </div>
-    </b-card>
+    </v-card>
   </div>
 </template>
 
@@ -119,8 +136,12 @@ export default {
 </script>
 
 <style>
+@media screen and (max-width: 500px) {
+  .vuebar-element {
+  }
+}
 .vuebar-element {
-  height: 350px;
+  height: 300px;
   width: 100%;
   max-width: 500px;
   background: white;

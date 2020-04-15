@@ -24,11 +24,8 @@
         ></b-form-checkbox-group>
       </b-form-group>
       <b-card-text>{{ loadingMarker }}</b-card-text> -->
-      <b-button
-        ref="markButton"
-        v-b-toggle.sidebar-right
-        style="display:none"
-      ></b-button>
+      <!--   -->
+      <b-button ref="markButton" style="display:none"></b-button>
 
       <b-toast
         id="error-toast"
@@ -49,13 +46,14 @@
       "
     />
 
-    <div>
-      <b-sidebar
-        id="sidebar-right"
-        title="Dashboard"
+    <div style="position: relative;" class="overflow-hidden">
+      <v-navigation-drawer
+        v-model="drawer"
+        width="300"
+        absolute
         right
-        shadow
-        class="sidebar"
+        clipped
+        temporary
       >
         <div v-bar class="vuebar-location">
           <div>
@@ -72,7 +70,16 @@
             />
           </div>
         </div>
-      </b-sidebar>
+      </v-navigation-drawer>
+
+      <!-- <b-sidebar
+        id="sidebar-right"
+        title="Dashboard"
+        right
+        shadow
+        class="sidebar"
+      >
+      </b-sidebar> -->
       <GmapMap
         id="map"
         ref="mapRef"
@@ -131,6 +138,7 @@ export default {
   },
   data() {
     return {
+      drawer: false,
       isSideBar: true,
       hide: false,
       isloading: false,
@@ -178,7 +186,8 @@ export default {
   },
   methods: {
     sideBarOpen(m, id) {
-      const data = this.markers[id];
+      setTimeout(()=> this.drawer = !this.drawer , 200) 
+      const data = this.markers[id]; 
       this.sideBarData = {
         ...this.sideBarData,
         types: data.types,
@@ -387,11 +396,11 @@ export default {
 <style>
 @media screen and (max-width: 500px) {
   .sidebar {
-    width: 75px;
+    /* width: 75px; */
   }
 }
 .sidebar {
-  width: 400px;
+  width: 430px;
 }
 .vuebar-location {
   height: 100%;

@@ -26,7 +26,7 @@ export default {
   /* width: 100%; */
 }
 .coupon {
-  width: 140px;
+  width: 125px;
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
@@ -49,7 +49,7 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 0px;
-  padding: 5px 10px;
+  padding: 5px 5px;
   font-weight: bold;
 }
 </style>
