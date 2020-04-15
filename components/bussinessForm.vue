@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-card :title="sideBar.name">
+    <v-card>
+      <v-card-title style="font-size:17px">{{ sideBar.name }}</v-card-title>
       <v-icon
         :large="true"
         style="cursor:pointer;padding:10px 0px"
@@ -8,7 +9,7 @@
         >mdi-arrow-left</v-icon
       >
 
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show"  class="p-3">
         <b-form-group
           id="input-group-3"
           label="Your First Name:"
@@ -63,10 +64,10 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
+        <b-button type="submit" variant="danger">Submit</b-button>
+        <b-button type="reset">Reset</b-button>
       </b-form>
-    </b-card>
+    </v-card>
   </div>
 </template>
 
@@ -104,7 +105,7 @@ export default {
               ...this.form
             })
             .then(() => {
-              alert('You are registered')
+              alert("You are registered");
               this.form.email = "";
               this.form.fName = "";
               this.form.lName = "";

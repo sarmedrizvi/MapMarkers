@@ -43,32 +43,36 @@
         </b-tab>
       </b-tabs>
       <v-card class="p-1 my-2">
-        <div
-          class="px-2"
-          style="display:flex;flex-wrap:wrap;justify-content:start"
-        >
-          <p class="socail" @click="heartFill = !heartFill">
-            <v-icon color="#f5393a" size="20">{{
-              heartFill ? "mdi-heart" : "mdi-heart-outline"
-            }}</v-icon
-            >Like
-          </p>
+        <div class="d-flex justify-content-between align-items-center" >
+          <div
+            class="px-2 d-flex justify-content-start"
+          >
+            <p class="socail" @click="heartFill = !heartFill">
+              <v-icon color="#f5393a" class="icon1" size="20">{{
+                heartFill ? "mdi-heart" : "mdi-heart-outline"
+              }}</v-icon
+              >Like
+            </p>
 
-          <p class="socail">
-            <v-icon color="#f5393a" size="20">mdi-share-outline</v-icon>Share
-          </p>
-          <p class="socail">
-            <v-icon color="#f5393a" size="20"
-              >mdi-account-box-outline</v-icon
-            >Contact
-          </p>
+            <p class="socail">
+              <v-icon color="#f5393a" class="icon1" size="20"
+                >mdi-share-outline</v-icon
+              >Share
+            </p>
+            <p class="socail">
+              <v-icon color="#f5393a" class="icon1" size="18"
+                >mdi-account-box-outline</v-icon
+              >Contact
+            </p>
+          </div>
+          <b-button class="claim-button" @click="$emit('updateClick')"
+            >Claim business</b-button
+          >
         </div>
-        <v-card-text class="py-0 font-weight-bolder"
+        <v-card-text class="py-0 px-2 font-weight-bolder"
           >Buy Coupons Now</v-card-text
         >
-        <v-card-text class="py-0"
-          ><hr class=" py-0 w-75 border"
-        /></v-card-text>
+        <v-card-text class="py-0 px-2"><hr class=" py-0 w-75 border"/></v-card-text>
 
         <div class="coupons">
           <coupon price="$20" type="Bronze" />
@@ -77,9 +81,6 @@
           <coupon price="$200" type="Platinum" />
         </div>
       </v-card>
-      <div class="d-flex justify-content-center">
-        <b-button @click="$emit('updateClick')">Claim your bussiness</b-button>
-      </div>
     </v-card>
   </div>
 </template>
@@ -124,8 +125,33 @@ export default {
 </script>
 
 <style>
-.socail{
-  margin: 15px 10px;
+.claim-button {
+  background-color: #f5393a;
+  width: 30%;
+  padding: 2px;
+  border: 1px solid #f5393a;
+  font-size: 12px;
+  height: 50px;
+  align-items: center;
+  margin: 10px;
+}
+.claim-button:hover{
+   background-color: #f52a2a;
+   border: 1px solid #f5393a;
+}
+.icon1 {
+  border: 1px solid #f5393a;
+  border-radius: 20px;
+  padding: 5px;
+  width: 32px;
+}
+.socail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 15px 0px;
+  margin-right: 10px;
   color: #f5393a;
   font-size: 14px;
   cursor: pointer;
@@ -135,6 +161,7 @@ export default {
   width: 100%;
   max-width: 500px;
   background: white;
+  
 }
 
 .vb > .vb-dragger {
@@ -179,6 +206,7 @@ export default {
   background: #000000;
 }
 .coupons {
+
   padding: 10px;
   width: 100%;
   display: flex;
