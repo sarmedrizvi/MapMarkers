@@ -229,10 +229,9 @@ export default {
         position.coords.latitude +
         "  Longitude: " +
         position.coords.longitude;
-      fetch(
+      axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
       )
-        .then(res => res.json())
         .then(data => {
           if (data.error_message) {
             console.log(data.error_message);
