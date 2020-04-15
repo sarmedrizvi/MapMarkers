@@ -49,11 +49,11 @@
     <div style="position: relative;" class="overflow-hidden">
       <v-navigation-drawer
         v-model="drawer"
-        width="300"
         absolute
         right
         clipped
         temporary
+        class="navigate"
       >
         <div v-bar class="vuebar-location">
           <div>
@@ -84,10 +84,36 @@
         id="map"
         ref="mapRef"
         :center="{ lat: latitude, lng: longitude }"
-        :zoom="16"
+        :zoom="18"
         map-type-id="terrain"
         style="width: 100%; height: 100vh;"
       >
+        <gmap-circle
+          :center="{ lat: latitude, lng: longitude }"
+          :radius="3"
+          :options="{
+            fillColor: '#208dfa',
+            stroke: 'border',
+            strokeColor: 'rgba(74, 164, 255, 0.5)',
+            fillOpacity: 0.8,
+            strokeOpacity: 0.8,
+            strokeWeight: 2
+          }"
+        >
+        </gmap-circle>
+        <gmap-circle
+          :center="{ lat: latitude, lng: longitude }"
+          :radius="10"
+          :options="{
+            fillColor: 'rgba(74, 164, 255, 0.5)',
+            stroke: 'border',
+            strokeColor: '#208dfa',
+            fillOpacity: 0.35,
+            strokeOpacity: 0.8,
+            strokeWeight: 2
+          }"
+        >
+        </gmap-circle>
         <GmapMarker
           v-for="(m, index) in markers"
           :key="index"
@@ -116,10 +142,12 @@
         </gmap-info-window>
       </GmapMap>
     </div>
+    <footerCustom />
   </div>
 </template>
 
 <script>
+import footerCustom from "./footer";
 import categories from "./categories";
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
@@ -134,7 +162,8 @@ export default {
     temp,
     loading,
     bussinessForm,
-    categories
+    categories,
+    footerCustom
   },
   data() {
     return {
@@ -186,8 +215,8 @@ export default {
   },
   methods: {
     sideBarOpen(m, id) {
-      setTimeout(()=> this.drawer = !this.drawer , 200) 
-      const data = this.markers[id]; 
+      setTimeout(() => (this.drawer = !this.drawer), 200);
+      const data = this.markers[id];
       this.sideBarData = {
         ...this.sideBarData,
         types: data.types,
@@ -229,9 +258,11 @@ export default {
         position.coords.latitude +
         "  Longitude: " +
         position.coords.longitude;
-      axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
-      )
+      axios
+        .get(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
+        )
+
         .then(data => {
           if (data.error_message) {
             console.log(data.error_message);
@@ -393,9 +424,12 @@ export default {
 };
 </script>
 <style>
+.navigate {
+  width: 400px !important;
+}
 @media screen and (max-width: 500px) {
-  .sidebar {
-    /* width: 75px; */
+  .navigate {
+    width: 300px !important;
   }
 }
 .sidebar {

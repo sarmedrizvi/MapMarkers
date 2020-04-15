@@ -18,6 +18,7 @@
     "firebase": "^7.14.0",
     "nuxt": "^2.0.0",
     "vue": "^2.6.11",
+    "vue-browser-geolocation": "^1.8.0",
     "vue-loading-overlay": "^3.3.2",
     "vue2-google-maps": "^0.10.7",
     "vuebar": "0.0.20"

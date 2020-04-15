@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <v-card>
+    <v-card class="py-1">
       <v-card-title style="font-size:17px">{{ sideBar.name }}</v-card-title>
       <v-card-subtitle>{{ sideBar.types.toUpperCase() }}</v-card-subtitle>
       <v-card-text class="text-danger font-weight-bold text-10">
@@ -15,9 +15,7 @@
             <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
 
             <iframe
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=250&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
-              width="300"
-              height="350"
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=300&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
               style="border:none;overflow:hidden"
               scrolling="no"
               frameborder="0"
@@ -49,28 +47,18 @@
           class="px-2"
           style="display:flex;flex-wrap:wrap;justify-content:start"
         >
-          <p
-            class="px-1 text-danger font-weight-bold"
-            style="cursor:pointer;font-size:13px"
-            @click="heartFill = !heartFill"
-          >
-            <v-icon class="text-danger" size="23">{{
+          <p class="socail" @click="heartFill = !heartFill">
+            <v-icon color="#f5393a" size="20">{{
               heartFill ? "mdi-heart" : "mdi-heart-outline"
             }}</v-icon
             >Like
           </p>
 
-          <p
-            class="px-1 text-danger font-weight-bold"
-            style="cursor:pointer;font-size:13px"
-          >
-            <v-icon class="text-danger" size="23">mdi-share</v-icon>Share
+          <p class="socail">
+            <v-icon color="#f5393a" size="20">mdi-share-outline</v-icon>Share
           </p>
-          <p
-            class="px-1 text-danger font-weight-bold"
-            style="cursor:pointer;font-size:13px"
-          >
-            <v-icon class="text-danger" size="23"
+          <p class="socail">
+            <v-icon color="#f5393a" size="20"
               >mdi-account-box-outline</v-icon
             >Contact
           </p>
@@ -78,8 +66,8 @@
         <v-card-text class="py-0 font-weight-bolder"
           >Buy Coupons Now</v-card-text
         >
-        <v-card-text
-          ><hr class=" py-0 w-25 border border border-secondary"
+        <v-card-text class="py-0"
+          ><hr class=" py-0 w-75 border"
         /></v-card-text>
 
         <div class="coupons">
@@ -136,9 +124,11 @@ export default {
 </script>
 
 <style>
-@media screen and (max-width: 500px) {
-  .vuebar-element {
-  }
+.socail{
+  margin: 15px 10px;
+  color: #f5393a;
+  font-size: 14px;
+  cursor: pointer;
 }
 .vuebar-element {
   height: 300px;

@@ -17,8 +17,8 @@
       <div class="text-danger " >
         <p class="m-0" style="font-size:13px">12:45PM</p>
         <div class="d-flex">
-          <v-icon  class="text-danger" style="cursor:pointer">mdi-share-circle</v-icon>
-          <v-icon class="text-danger" style="cursor:pointer">mdi-heart</v-icon>
+          <v-icon  class="text-danger" style="cursor:pointer" size="20">mdi-share-circle</v-icon>
+          <v-icon class="text-danger" style="cursor:pointer" size="20">mdi-heart</v-icon>
         </div>
       </div>
     </div>

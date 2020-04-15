@@ -34,13 +34,13 @@ export default {
   height: 50px;
   cursor: pointer;
   border-radius: 1px;
-  border: 1px solid rgb(185, 31, 31);
+  border: 1px solid #f5393a;
 }
 .icon {
   height: 100%;
   padding: 10px 5px;
   width: 40%;
-  background-color: rgb(226, 19, 19);
+  background-color: #f5393a;
   color: white;
   text-align: center;
 }
@@ -50,6 +50,7 @@ export default {
   align-items: center;
   margin: 0px;
   padding: 5px 5px;
+  font-size: 12px;
   font-weight: bold;
 }
 </style>
