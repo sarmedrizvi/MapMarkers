@@ -1,16 +1,53 @@
 <template>
   <div class="main-content">
     <v-card class="py-1">
-      <v-card-title style="font-size:17px">{{ sideBar.name }}</v-card-title>
-      <v-card-subtitle>{{ sideBar.types.toUpperCase() }}</v-card-subtitle>
-      <v-card-text class="text-danger font-weight-bold text-10">
-        <v-icon style="color:red;">mdi-map-marker</v-icon>
-        {{ sideBar.location }}
-      </v-card-text>
-
       <b-tabs card end v-model="tabIndex" content-class="tabs" fill>
-        <b-tab :title-link-class="linkClass(0)" title="Wall">
-          <div class="vuebar-element" v-bar>
+        <b-tab
+          style="height:388.5px"
+          :title-link-class="linkClass(0)"
+          title="Home"
+        >
+          <div>
+            <v-card-title style="font-size:17px"
+              >Introductory Video</v-card-title
+            >
+            <div style="height:248px" class="vuebar-element" v-bar>
+              <iframe
+                src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fbizzworldcommunications%2Fposts%2F898887327115492&width=350&show_text=false&appId=2909282099193212&height=200"
+                width="350"
+                height="200"
+                style="border:none;overflow:hidden"
+                scrolling="no"
+                frameborder="0"
+                allowTransparency="true"
+                allow="encrypted-media"
+              ></iframe>
+            </div>
+          </div>
+        </b-tab>
+        <b-tab
+          style="height:388.5px"
+          :title-link-class="linkClass(1)"
+          title="Wall"
+        >
+          <div>
+            <v-card-title style="font-size:17px" class="p-0 m-0">{{
+              sideBar.name
+            }}</v-card-title>
+            <v-card-subtitle class="p-0 m-0">{{
+              sideBar.types.toUpperCase()
+            }}</v-card-subtitle>
+            <v-card-text
+              class=" p-0 m-0 text-danger font-weight-bold"
+              style="overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;"
+            >
+              <v-icon style="color:red;">mdi-map-marker</v-icon>
+              {{ sideBar.location }}
+            </v-card-text>
+          </div>
+          <div style="height:248px" class="vuebar-element" v-bar>
             <!-- <div> -->
             <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
 
@@ -25,8 +62,29 @@
             <!-- </div> -->
           </div>
         </b-tab>
-        <b-tab :title-link-class="linkClass(1)" title="Feedback">
-          <div class="vuebar-element" v-bar>
+        <b-tab
+          style="height:388.5px"
+          :title-link-class="linkClass(2)"
+          title="Feedback"
+        >
+          <div>
+            <v-card-title style="font-size:17px" class="p-0 m-0">{{
+              sideBar.name
+            }}</v-card-title>
+            <v-card-subtitle class="p-0 m-0">{{
+              sideBar.types.toUpperCase()
+            }}</v-card-subtitle>
+            <v-card-text
+              class=" p-0 m-0 text-danger font-weight-bold"
+              style="overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;"
+            >
+              <v-icon style="color:red;">mdi-map-marker</v-icon>
+              {{ sideBar.location }}
+            </v-card-text>
+          </div>
+          <div style="height:240px" class="vuebar-element" v-bar>
             <div>
               <ul
                 style="display:flex;flex-direction:column-reverse"
@@ -53,8 +111,12 @@
             >
           </div>
         </b-tab>
-        <b-tab :title-link-class="linkClass(2)" title="Profile">
-          <div class="vuebar-element" v-bar>
+        <b-tab
+          style="height:388.5px"
+          :title-link-class="linkClass(3)"
+          title="Profile"
+        >
+          <div style="height:350px" class="vuebar-element" v-bar>
             <div>
               <profile :sideBar="sideBar" />
             </div>
@@ -188,7 +250,6 @@ export default {
   cursor: pointer;
 }
 .vuebar-element {
-  height: 300px;
   width: 100%;
   max-width: 500px;
   background: white;

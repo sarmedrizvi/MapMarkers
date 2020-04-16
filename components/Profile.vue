@@ -7,6 +7,7 @@
         class="grey lighten-2"
         max-width="500"
         max-height="100"
+        
         style="border-bottom-left-radius: 100px;border-bottom-right-radius: 100px;"
       ></v-img>
     </v-row>
