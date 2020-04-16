@@ -46,6 +46,7 @@
               placeholder="Feedback"
               v-model="feedback"
               type="text"
+              @keydown.enter="AddCommentToBussiness"
             ></b-form-input>
             <v-btn @click="AddCommentToBussiness"
               ><v-icon>mdi-send</v-icon></v-btn

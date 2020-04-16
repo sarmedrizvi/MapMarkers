@@ -9,6 +9,7 @@
           class="webSearch"
           placeholder="Search Type"
           type="text"
+          @keydown.enter="addMarker"
         ></b-form-input>
         <!-- <v-autocomplete
           v-model="values"
@@ -60,14 +61,14 @@
         value => {
           selected = [...value];
           addMarkers();
-        }
-      "
+        }"
     />
     <b-form-input
       size="sm"
       class="mobSearch"
       placeholder="Search Type"
       type="text"
+      @keydown.enter="addMarker"
       v-model="typeSearch"
     ></b-form-input>
     <div style="position: relative;" class="overflow-hidden">
@@ -256,7 +257,6 @@ export default {
         const data = snap.val();
         this.sideBarData.feedback = [];
         Object.keys(data).map(item => {
-         
           this.sideBarData.feedback.push(data[item]);
         });
       });
@@ -327,10 +327,8 @@ export default {
         </div>`;
     },
     addMarkers() {
-      if(this.typeSearch)
-      {
+      if (this.typeSearch) {
         this.selected.push(this.typeSearch?.toLowerCase());
-
       }
       console.log(this.selected);
       this.markers = [];
