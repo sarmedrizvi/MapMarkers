@@ -61,7 +61,8 @@
         value => {
           selected = [...value];
           addMarkers();
-        }"
+        }
+      "
     />
     <b-form-input
       size="sm"
@@ -230,7 +231,8 @@ export default {
           views: "",
           coupons: ""
         },
-        feedback: []
+        feedback: [],
+        isBusinessClaimed: null
       },
       loading: true,
       transition: "scale-transition"
@@ -253,12 +255,23 @@ export default {
         },
         id: data.id
       };
+
       db.ref(`${this.sideBarData.id}/feedback`).on("value", snap => {
         const data = snap.val();
-        this.sideBarData.feedback = [];
-        Object.keys(data).map(item => {
-          this.sideBarData.feedback.push(data[item]);
-        });
+        if (data) {
+          this.sideBarData.feedback = [];
+          Object.keys(data).map(item => {
+            this.sideBarData.feedback.push(data[item]);
+          });
+        }
+      });
+
+      db.ref(`BusinessDetails/${this.sideBarData.id}`).on("value", snap => {
+        if (snap.val()) {
+          this.sideBarData.isBusinessClaimed = true;
+        } else {
+          this.sideBarData.isBusinessClaimed = false;
+        }
       });
     },
     markersHover(marker, idx) {

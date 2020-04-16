@@ -1,18 +1,39 @@
 <template>
   <div class="main-content">
     <v-card class="py-1">
-      <b-tabs card end v-model="tabIndex" content-class="tabs" fill>
+      <b-tabs
+        class="p-0 mx-2"
+        card
+        top
+        v-model="tabIndex"
+        content-class="tabs"
+        fill
+      >
         <b-tab
-          style="height:388.5px"
+          style="height:300px"
           :title-link-class="linkClass(0)"
           title="Home"
+          class="p-0 m-1"
         >
           <div>
-            <v-card-title style="font-size:17px"
+            <v-card-title style="font-size:17px" class="p-0 m-0">{{
+              sideBar.name
+            }}</v-card-title>
+            <v-card-text
+              class=" p-0 m-0 text-danger font-weight-bold"
+              style="overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;"
+            >
+              <v-icon style="color:red;">mdi-map-marker</v-icon>
+              {{ sideBar.location }}
+            </v-card-text>
+            <v-card-title style="font-size:17px" class="p-0 m-0"
               >Introductory Video</v-card-title
             >
-            <div style="height:248px" class="vuebar-element" v-bar>
-              <iframe
+
+            <div style="height:210px" class="vuebar-element" v-bar>
+              <!-- <iframe
                 src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fbizzworldcommunications%2Fposts%2F898887327115492&width=350&show_text=false&appId=2909282099193212&height=200"
                 width="350"
                 height="200"
@@ -21,7 +42,13 @@
                 frameborder="0"
                 allowTransparency="true"
                 allow="encrypted-media"
-              ></iframe>
+              ></iframe> -->
+              <b-embed
+                type="iframe"
+                aspect="16by9"
+                src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fbizzworldcommunications%2Fposts%2F898887327115492&show_text=false&appId=2909282099193212"
+                allowfullscreen
+              ></b-embed>
             </div>
           </div>
         </b-tab>
@@ -123,45 +150,51 @@
           </div>
         </b-tab>
       </b-tabs>
-      <v-card class="p-1 my-2">
+      <div class="py-1">
         <div class="d-flex justify-content-between align-items-center">
           <div class="px-2 d-flex justify-content-start">
-            <p class="socail" @click="heartFill = !heartFill">
+            
+            <p class="socail my-0 mx-1" @click="heartFill = !heartFill" style="font-size:12px">
               <v-icon color="#f5393a" class="icon1" size="20">{{
                 heartFill ? "mdi-heart" : "mdi-heart-outline"
               }}</v-icon
               >Like
             </p>
 
-            <p class="socail">
+            <p class="socail my-0 mx-1" style="font-size:12px">
               <v-icon color="#f5393a" class="icon1" size="20"
                 >mdi-share-outline</v-icon
               >Share
             </p>
-            <p class="socail">
-              <v-icon color="#f5393a" class="icon1" size="18"
+            <p class="socail my-0 mx-1" style="font-size:12px">
+              <v-icon color="#f5393a" class="icon1" size="20"
                 >mdi-account-box-outline</v-icon
               >Contact
             </p>
           </div>
-          <b-button class="claim-button" @click="$emit('updateClick')"
+          <b-button
+            v-if="!sideBar.isBusinessClaimed"
+            class="claim-button"
+            @click="$emit('updateClick')"
             >Claim business</b-button
           >
         </div>
-        <v-card-text class="py-0 px-2 font-weight-bolder"
-          >Buy Coupons Now</v-card-text
-        >
-        <v-card-text class="py-0 px-2"
-          ><hr class=" py-0 w-75 border"
-        /></v-card-text>
+        <div class="coupons" v-if="sideBar.isBusinessClaimed">
+          <v-card-text class="px-1 m-0 py-0 font-weight-bolder"
+            >Buy Coupons Now</v-card-text
+          >
+          <v-card-text class="py-0 px-1"
+            ><hr class=" p-0 m-0 w-75 border"
+          /></v-card-text>
 
-        <div class="coupons">
-          <coupon price="$20" type="Bronze" />
-          <coupon price="$50" type="Silver" />
-          <coupon price="$100" type="Gold" />
-          <coupon price="$200" type="Platinum" />
+          <div class="coupons">
+            <coupon price="$20" type="Bronze" />
+            <coupon price="$50" type="Silver" />
+            <coupon price="$100" type="Gold" />
+            <coupon price="$200" type="Platinum" />
+          </div>
         </div>
-      </v-card>
+      </div>
     </v-card>
   </div>
 </template>
@@ -297,7 +330,7 @@ export default {
   background: #000000;
 }
 .coupons {
-  padding: 10px;
+  padding: 5px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
