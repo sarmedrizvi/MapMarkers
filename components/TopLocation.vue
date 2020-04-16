@@ -2,7 +2,25 @@
   <div style="">
     <b-card style="background-color:#f5393a" text-variant="white">
       <div class="d-flex justify-content-between">
-        <b-card-title>Live Location</b-card-title>
+        <b-card-title>Live location</b-card-title>
+        <b-form-input
+          v-model="typeSearch"
+          size="sm"
+          class="webSearch"
+          placeholder="Search Type"
+          type="text"
+        ></b-form-input>
+        <!-- <v-autocomplete
+          v-model="values"
+          :items="types"
+          outlined
+          dense
+          chips
+          small-chips
+          label="Search type"
+          class="webSearch"
+          multiple
+        ></v-autocomplete> -->
         <b-button
           href="#"
           variant="light"
@@ -45,7 +63,13 @@
         }
       "
     />
-
+    <b-form-input
+      size="sm"
+      class="mobSearch"
+      placeholder="Search Type"
+      type="text"
+      v-model="typeSearch"
+    ></b-form-input>
     <div style="position: relative;" class="overflow-hidden">
       <!-- <b-sidebar
         id="sidebar-right"
@@ -68,11 +92,10 @@
           :radius="3"
           :options="{
             fillColor: '#208dfa',
-            stroke: 'border',
+
             strokeColor: 'rgba(74, 164, 255, 0.5)',
             fillOpacity: 1,
-            strokeOpacity: 0.8,
-            strokeWeight: 2
+            strokeOpacity: 0.8
           }"
         >
         </gmap-circle>
@@ -81,11 +104,10 @@
           :radius="10"
           :options="{
             fillColor: 'rgba(74, 164, 255, 0.5)',
-            stroke: 'border',
+
             strokeColor: '#208dfa',
             fillOpacity: 0.35,
-            strokeOpacity: 0.8,
-            strokeWeight: 2
+            strokeOpacity: 0.8
           }"
         >
         </gmap-circle>
@@ -165,6 +187,7 @@ export default {
   },
   data() {
     return {
+      typeSearch: "",
       drawer: false,
       isSideBar: true,
       hide: false,
@@ -205,7 +228,8 @@ export default {
           likes: "",
           views: "",
           coupons: ""
-        }
+        },
+        feedback: []
       },
       loading: true,
       transition: "scale-transition"
@@ -228,6 +252,14 @@ export default {
         },
         id: data.id
       };
+      db.ref(`${this.sideBarData.id}/feedback`).on("value", snap => {
+        const data = snap.val();
+        this.sideBarData.feedback = [];
+        Object.keys(data).map(item => {
+          console.log(data[item]);
+          this.sideBarData.feedback.push(data[item]);
+        });
+      });
     },
     markersHover(marker, idx) {
       // console.log(marker);
@@ -295,6 +327,7 @@ export default {
         </div>`;
     },
     addMarkers() {
+      this.selected.push(this.typeSearch.toLowerCase());
       console.log(this.selected);
       this.markers = [];
       const request = {
@@ -337,9 +370,7 @@ export default {
                         name: marker.name,
                         id: marker.id,
                         types: marker.types[0],
-                        pictureRef: marker.photos
-                          ? marker.photos[0].photo_reference
-                          : null,
+                        pictureRef: marker.photos[0]?.photo_reference,
                         location: marker.vicinity
                       });
                       this.loadingMarker = "Markers are Added";
@@ -422,6 +453,20 @@ export default {
 };
 </script>
 <style>
+.mobSearch {
+  display: none;
+}
+@media screen and (max-width: 1200px) {
+  .webSearch {
+    display: none;
+  }
+  .mobSearch {
+    display: flex;
+  }
+}
+.webSearch {
+  width: 75vw !important;
+}
 .navigate {
   width: 400px !important;
 }

@@ -29,24 +29,37 @@
           <div class="vuebar-element" v-bar>
             <div>
               <ul class="list-unstyled">
+                <Feedback
+                  v-for="(i, index) in sideBar.feedback"
+                  :key="index * 11"
+                  :feedback="i"
+                />
                 <Feedback v-for="i in 10" :key="i" />
               </ul>
             </div>
+          </div>
+          <div class="d-flex justify-content-between feedback">
+            <b-form-input
+              placeholder="Feedback"
+              v-model="feedback"
+              type="text"
+            ></b-form-input>
+            <v-btn @click="AddCommentToBussiness"
+              ><v-icon>mdi-send</v-icon></v-btn
+            >
           </div>
         </b-tab>
         <b-tab :title-link-class="linkClass(2)" title="Profile">
           <div class="vuebar-element" v-bar>
             <div>
-              <profile />
+              <profile :sideBar="sideBar"/>
             </div>
           </div>
         </b-tab>
       </b-tabs>
       <v-card class="p-1 my-2">
-        <div class="d-flex justify-content-between align-items-center" >
-          <div
-            class="px-2 d-flex justify-content-start"
-          >
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="px-2 d-flex justify-content-start">
             <p class="socail" @click="heartFill = !heartFill">
               <v-icon color="#f5393a" class="icon1" size="20">{{
                 heartFill ? "mdi-heart" : "mdi-heart-outline"
@@ -72,7 +85,9 @@
         <v-card-text class="py-0 px-2 font-weight-bolder"
           >Buy Coupons Now</v-card-text
         >
-        <v-card-text class="py-0 px-2"><hr class=" py-0 w-75 border"/></v-card-text>
+        <v-card-text class="py-0 px-2"
+          ><hr class=" py-0 w-75 border"
+        /></v-card-text>
 
         <div class="coupons">
           <coupon price="$20" type="Bronze" />
@@ -90,11 +105,14 @@ import coupon from "./coupons";
 import card from "./InstaCard";
 import Feedback from "./feedback";
 import profile from "./Profile";
+import { db } from "../plugins/firebase";
+
 export default {
   data() {
     return {
       heartFill: false,
-      tabIndex: 0
+      tabIndex: 0,
+      feedback: ""
     };
   },
   methods: {
@@ -104,6 +122,11 @@ export default {
       } else {
         return ["bg-outline-secondary", "text-dark", "px-2"];
       }
+    },
+    AddCommentToBussiness() {
+      const feedback = db.ref(`${this.sideBar.id}/feedback`);
+      feedback.push(this.feedback);
+      this.feedback = "";
     }
   },
   components: {
@@ -120,11 +143,15 @@ export default {
       type: Boolean
     }
   },
-  computed: {}
+  computed: {},
+  created() {}
 };
 </script>
 
 <style>
+.feedback {
+  margin: 5px;
+}
 .claim-button {
   background-color: #f5393a;
   width: 30%;
@@ -135,9 +162,9 @@ export default {
   align-items: center;
   margin: 10px;
 }
-.claim-button:hover{
-   background-color: #f52a2a;
-   border: 1px solid #f5393a;
+.claim-button:hover {
+  background-color: #f52a2a;
+  border: 1px solid #f5393a;
 }
 .icon1 {
   border: 1px solid #f5393a;
@@ -161,7 +188,6 @@ export default {
   width: 100%;
   max-width: 500px;
   background: white;
-  
 }
 
 .vb > .vb-dragger {
@@ -206,7 +232,6 @@ export default {
   background: #000000;
 }
 .coupons {
-
   padding: 10px;
   width: 100%;
   display: flex;

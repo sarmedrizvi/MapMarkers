@@ -1,14 +1,14 @@
 import * as firebase from "firebase/app";
 import "firebase/database";
 var firebaseConfig = {
-  apiKey: "AIzaSyAyGe1aYA8PS08SZ6At1uyAoXhVORtplqA",
-  authDomain: "map-nuxtjs.firebaseapp.com",
-  databaseURL: "https://map-nuxtjs.firebaseio.com",
-  projectId: "map-nuxtjs",
-  storageBucket: "map-nuxtjs.appspot.com",
-  messagingSenderId: "326348824160",
-  appId: "1:326348824160:web:8b14886daa2ea9dd286d05",
-  measurementId: "G-KYG2GLKGN8"
+  apiKey: "AIzaSyAvHA6cyIVTlcJsiJuwhrtq94kD0joZwfQ",
+  authDomain: "map-nuxt.firebaseapp.com",
+  databaseURL: "https://map-nuxt.firebaseio.com",
+  projectId: "map-nuxt",
+  storageBucket: "map-nuxt.appspot.com",
+  messagingSenderId: "452009137175",
+  appId: "1:452009137175:web:0864428e9166078f4c7852",
+  measurementId: "G-2F8E3FP42Q"
 };
 
 if (!firebase.apps.length) {

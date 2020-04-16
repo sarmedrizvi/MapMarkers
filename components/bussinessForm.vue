@@ -9,7 +9,7 @@
         >mdi-arrow-left</v-icon
       >
 
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show"  class="p-3">
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="p-3">
         <b-form-group
           id="input-group-3"
           label="Your First Name:"
@@ -94,25 +94,31 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
+      // this.form.businessName = this.sideBar.name;
+      // this.form.businessType = this.sideBar.type;
+      // this.form.location = this.sideBar.location;
+      this.form = {
+        ...this.form,
+        businessName: this.sideBar.name,
+        type: this.sideBar.types,
+        location: this.sideBar.location
+      };
       //   alert(JSON.stringify(this.form));
-      const bussinessFormRef = db.ref(`/${this.sideBar.id}/BussinessDetails`);
-      bussinessFormRef.once("value", snapshot => {
-        if (snapshot.val()) {
-          alert("You are already Registered");
-        } else {
-          bussinessFormRef
-            .set({
-              ...this.form
-            })
-            .then(() => {
-              alert("You are registered");
-              this.form.email = "";
-              this.form.fName = "";
-              this.form.lName = "";
-              this.form.phone = "";
-            });
-        }
-      });
+      const bussinessFormRef = db.ref(`/BusinessDetails/${this.sideBar.id}`);
+      bussinessFormRef
+        .set({
+          ...this.form
+        })
+        .then(() => {
+          alert("You are registered");
+          this.form.businessName = "";
+          this.form.businessType = "";
+          this.form.location = "";
+          this.form.email = "";
+          this.form.fName = "";
+          this.form.lName = "";
+          this.form.phone = "";
+        });
     },
     onReset(evt) {
       evt.preventDefault();
@@ -121,7 +127,9 @@ export default {
       this.form.fName = "";
       this.form.lName = "";
       this.form.phone = "";
-
+      this.form.businessName = "";
+      this.form.businessType = "";
+      this.form.location = "";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {

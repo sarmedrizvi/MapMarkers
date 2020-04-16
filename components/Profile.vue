@@ -20,11 +20,11 @@
           style="border:3px white solid"
         />
       </v-avatar>
-      <p class="m-0 text-24 font-size-large">Timothy Carlson</p>
+      <p class="m-0 text-24 ">{{ sideBar.name }}</p>
       <p class="font-weight-bold m-0 text-danger font-size-small">
-        Digital Marketer
+        {{ sideBar.types }}
       </p>
-      <p class="font-size-small">Karachi | +9233-7263727</p>
+      <p class="font-size-small">{{sideBar.location}} | +9233-7263727</p>
     </div>
     <div class="d-flex justify-content-center">
       <v-avatar size="36" color="#1A237E" class="mx-2">
@@ -52,7 +52,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    sideBar: {
+      type: Object
+    }
+  }
+};
 </script>
 
 <style>

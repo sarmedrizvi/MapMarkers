@@ -12,7 +12,7 @@
         <p
           class="mb-0 font-weight-dark text-break m-0"
           style="font-size:13px"
-        >Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</p>
+        >{{ feedback || 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.' }} </p>
       </div>
       <div  >
         <p class="m-0" style="font-size:13px">12:45PM</p>
@@ -30,6 +30,11 @@
 <script>
 import color from '../contants/color'
 export default {
+  props:{
+    feedback:{
+      type:String
+    }
+  },
   data: () => ({
    
   })
