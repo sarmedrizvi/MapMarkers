@@ -187,7 +187,7 @@ export default {
   },
   data() {
     return {
-      typeSearch: "",
+      typeSearch: null,
       drawer: false,
       isSideBar: true,
       hide: false,
@@ -256,7 +256,7 @@ export default {
         const data = snap.val();
         this.sideBarData.feedback = [];
         Object.keys(data).map(item => {
-          console.log(data[item]);
+         
           this.sideBarData.feedback.push(data[item]);
         });
       });
@@ -327,7 +327,11 @@ export default {
         </div>`;
     },
     addMarkers() {
-      this.selected.push(this.typeSearch.toLowerCase());
+      if(this.typeSearch)
+      {
+        this.selected.push(this.typeSearch?.toLowerCase());
+
+      }
       console.log(this.selected);
       this.markers = [];
       const request = {

@@ -2,7 +2,7 @@
   <div class="container">
     <v-row align="center" justify="center">
       <v-img
-        src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg"
+        :src="sideBar.picture"
         aspect-ratio="1"
         class="grey lighten-2"
         max-width="500"

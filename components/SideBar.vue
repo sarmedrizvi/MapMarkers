@@ -28,13 +28,16 @@
         <b-tab :title-link-class="linkClass(1)" title="Feedback">
           <div class="vuebar-element" v-bar>
             <div>
-              <ul class="list-unstyled">
+              <ul
+                style="display:flex;flex-direction:column-reverse"
+                class="list-unstyled"
+              >
+                <Feedback v-for="i in 10" :key="i" />
                 <Feedback
                   v-for="(i, index) in sideBar.feedback"
                   :key="index * 11"
                   :feedback="i"
                 />
-                <Feedback v-for="i in 10" :key="i" />
               </ul>
             </div>
           </div>
@@ -52,7 +55,7 @@
         <b-tab :title-link-class="linkClass(2)" title="Profile">
           <div class="vuebar-element" v-bar>
             <div>
-              <profile :sideBar="sideBar"/>
+              <profile :sideBar="sideBar" />
             </div>
           </div>
         </b-tab>
