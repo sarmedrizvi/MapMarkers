@@ -5,7 +5,7 @@
         <b-card-title>Live location</b-card-title>
         <b-form-input
           v-model="typeSearch"
-          size="sm"
+          size="md"
           class="webSearch"
           placeholder="Search Type"
           type="text"

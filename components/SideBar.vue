@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div class="main-content d-flex flex-column " >
     <v-card class="py-1">
       <b-tabs
         class="p-0 mx-2"
@@ -153,8 +153,11 @@
       <div class="py-1">
         <div class="d-flex justify-content-between align-items-center">
           <div class="px-2 d-flex justify-content-start">
-            
-            <p class="socail my-0 mx-1" @click="heartFill = !heartFill" style="font-size:12px">
+            <p
+              class="socail my-0 mx-1"
+              @click="heartFill = !heartFill"
+              style="font-size:12px"
+            >
               <v-icon color="#f5393a" class="icon1" size="20">{{
                 heartFill ? "mdi-heart" : "mdi-heart-outline"
               }}</v-icon
@@ -172,30 +175,31 @@
               >Contact
             </p>
           </div>
-          <b-button
-            v-if="!sideBar.isBusinessClaimed"
-            class="claim-button"
-            @click="$emit('updateClick')"
-            >Claim business</b-button
-          >
         </div>
-        <div class="coupons" v-if="sideBar.isBusinessClaimed">
-          <v-card-text class="px-1 m-0 py-0 font-weight-bolder"
-            >Buy Coupons Now</v-card-text
-          >
-          <v-card-text class="py-0 px-1"
-            ><hr class=" p-0 m-0 w-75 border"
-          /></v-card-text>
+        <div>
+          <div v-if="sideBar.isBusinessClaimed" class="mx-2">
+            <v-card-text class="px-1 m-0 py-0 font-weight-bolder"
+              >Buy Coupons Now</v-card-text
+            >
+            <v-card-text class="py-0 px-1"
+              ><hr class=" p-0 m-0 w-75 border"
+            /></v-card-text>
 
-          <div class="coupons">
-            <coupon price="$20" type="Bronze" />
-            <coupon price="$50" type="Silver" />
-            <coupon price="$100" type="Gold" />
-            <coupon price="$200" type="Platinum" />
+            <div class="coupons">
+              <coupon price="$20" type="Bronze" />
+              <coupon price="$50" type="Silver" />
+              <coupon price="$100" type="Gold" />
+              <coupon price="$200" type="Platinum" />
+            </div>
           </div>
         </div>
       </div>
     </v-card>
+   
+      <b-button v-if="!sideBar.isBusinessClaimed"  class="my-5 align-self-center claim-button" @click="$emit('updateClick')"
+        >Claim business</b-button
+      >
+   
   </div>
 </template>
 
