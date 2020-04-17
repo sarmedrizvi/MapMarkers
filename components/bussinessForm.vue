@@ -9,6 +9,7 @@
         >mdi-arrow-left</v-icon
       >
       <div class="d-flex justify-content-center">
+       
         <b-button variant="danger"  v-if="fbShow" @click="facebookAuth"
           >Login as facebook</b-button
         >

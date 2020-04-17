@@ -19,7 +19,9 @@
     "nuxt": "^2.0.0",
     "vue": "^2.6.11",
     "vue-browser-geolocation": "^1.8.0",
+    "vue-country-select": "^0.2.2",
     "vue-loading-overlay": "^3.3.2",
+    "vue-select": "^3.10.0",
     "vue2-google-maps": "^0.10.7",
     "vuebar": "0.0.20"
   },

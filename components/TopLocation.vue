@@ -178,6 +178,7 @@ import sideBar from "./SideBar";
 import temp from "./Skeleton";
 import bussinessForm from "./bussinessForm";
 import axios from "axios";
+import { mapActions } from "vuex";
 export default {
   components: {
     sideBar,
@@ -239,6 +240,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      AddUser: "SideBarData/AddUser",
+      sideBar: "SideBarData/AddSideBar"
+    }),
     sideBarOpen(m, id) {
       setTimeout(() => (this.drawer = !this.drawer), 200);
       const data = this.markers[id];
@@ -273,6 +278,21 @@ export default {
           this.sideBarData.isBusinessClaimed = false;
         }
       });
+
+      db.ref(`BusinessDetails/${this.sideBarData.id}/facebookLogin`).on(
+        "value",
+        snap => {
+          if (snap.val()) {
+            this.AddUser({
+              ...snap.val()
+            });
+          } else {
+            this.AddUser({});
+          }
+        }
+      );
+
+      this.sideBar(this.sideBarData);
     },
     markersHover(marker, idx) {
       // console.log(marker);

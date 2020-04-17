@@ -10,24 +10,15 @@
         fill
       >
         <b-tab
-          style="height:300px"
+          style="height:330px"
           :title-link-class="linkClass(0)"
           title="Home"
           class="p-0 m-1"
         >
           <div>
             <location-info :sideBar="sideBar" />
+             <nuxt-link to="/user">Profile</nuxt-link>
             <div style="height:210px" class="vuebar-element" v-bar>
-              <!-- <iframe
-                src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fbizzworldcommunications%2Fposts%2F898887327115492&width=350&show_text=false&appId=2909282099193212&height=200"
-                width="350"
-                height="200"
-                style="border:none;overflow:hidden"
-                scrolling="no"
-                frameborder="0"
-                allowTransparency="true"
-                allow="encrypted-media"
-              ></iframe> -->
               <b-embed
                 type="iframe"
                 aspect="16by9"
@@ -44,9 +35,6 @@
         >
          <location-info :sideBar="sideBar" />
           <div style="height:248px" class="vuebar-element" v-bar>
-            <!-- <div> -->
-            <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
-
             <iframe
               src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=300&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
               style="border:none;overflow:hidden"
