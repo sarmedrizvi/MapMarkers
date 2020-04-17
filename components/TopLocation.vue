@@ -292,7 +292,7 @@ export default {
         }
       );
 
-      this.sideBar(this.sideBarData);
+      this.sideBar({ ...this.sideBarData });
     },
     markersHover(marker, idx) {
       // console.log(marker);
