@@ -1,15 +1,23 @@
 <template>
   <div>
-    <v-card>
-      <v-card-title style="font-size:17px">{{ sideBar.name }}</v-card-title>
+    <v-card class="px-2 py-1">
+      <location-info :sideBar="sideBar" />
       <v-icon
         :large="true"
         style="cursor:pointer;padding:10px 0px"
         @click="$emit('updateClick')"
         >mdi-arrow-left</v-icon
       >
-
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show" class="p-3">
+      <div class="d-flex justify-content-center">
+        <b-button variant="danger"  v-if="fbShow" @click="facebookAuth"
+          >Login as facebook</b-button
+        >
+      </div>
+      <b-form
+        @submit="onSubmit"
+        @reset="onReset"
+        v-if="show && $store.state.SideBarData.sideBarUser !== {}"
+      >
         <b-form-group
           id="input-group-3"
           label="Your First Name:"
@@ -72,8 +80,13 @@
 </template>
 
 <script>
-import { db } from "../plugins/firebase";
+import { db, auth, provider } from "../plugins/firebase";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import locationInfo from "./LocationInfo";
 export default {
+  components: {
+    locationInfo
+  },
   props: {
     sideBar: {
       type: Object,
@@ -88,10 +101,64 @@ export default {
         fName: "",
         phone: ""
       },
-      show: true
+      show: false,
+      fbShow: true
     };
   },
   methods: {
+    facebookAuth() {
+      auth
+        .signInWithPopup(provider)
+        .then(result => {
+          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+          const token = result.credential.accessToken;
+          // The signed-in user info.
+          const {
+            uid,
+            displayName,
+            photoURL,
+            phoneNumber,
+            emailVerified,
+            email
+          } = result.user;
+          // ...
+          this.AddUser({
+            uid,
+            displayName,
+            email,
+            phoneNumber,
+            photoURL,
+            emailVerified
+          });
+          db.ref(`BusinessDetails/${this.sideBar.id}/facebookLogin`).on(
+            "value",
+            snap => {
+              if (snap.val()) {
+                alert("Already Registered");
+              } else {
+                db.ref(`BusinessDetails/${this.sideBar.id}/facebookLogin`).set({
+                  ...this.$store.state.SideBarData.sideBarUser
+                });
+                this.show = true;
+                this.fbShow = false;
+              }
+            }
+          );
+
+          // console.log(this.$store.state.SideBarData.sideBarUser, "No");
+        })
+        .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+          console.log(error);
+        });
+    },
     onSubmit(evt) {
       evt.preventDefault();
       // this.form.businessName = this.sideBar.name;
@@ -135,7 +202,11 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    }
+    },
+    ...mapActions({ AddUser: "SideBarData/AddUser" })
+  },
+  computed: {
+    // ...mapGetters({ User: "SideBarData/BusinessUser" }),
   }
 };
 </script>

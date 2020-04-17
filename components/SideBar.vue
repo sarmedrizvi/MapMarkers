@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content d-flex flex-column " >
+  <div class="main-content d-flex flex-column ">
     <v-card class="py-1">
       <b-tabs
         class="p-0 mx-2"
@@ -16,22 +16,7 @@
           class="p-0 m-1"
         >
           <div>
-            <v-card-title style="font-size:17px" class="p-0 m-0">{{
-              sideBar.name
-            }}</v-card-title>
-            <v-card-text
-              class=" p-0 m-0 text-danger font-weight-bold"
-              style="overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;"
-            >
-              <v-icon style="color:red;">mdi-map-marker</v-icon>
-              {{ sideBar.location }}
-            </v-card-text>
-            <v-card-title style="font-size:17px" class="p-0 m-0"
-              >Introductory Video</v-card-title
-            >
-
+            <location-info :sideBar="sideBar" />
             <div style="height:210px" class="vuebar-element" v-bar>
               <!-- <iframe
                 src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fbizzworldcommunications%2Fposts%2F898887327115492&width=350&show_text=false&appId=2909282099193212&height=200"
@@ -57,23 +42,7 @@
           :title-link-class="linkClass(1)"
           title="Wall"
         >
-          <div>
-            <v-card-title style="font-size:17px" class="p-0 m-0">{{
-              sideBar.name
-            }}</v-card-title>
-            <v-card-subtitle class="p-0 m-0">{{
-              sideBar.types.toUpperCase()
-            }}</v-card-subtitle>
-            <v-card-text
-              class=" p-0 m-0 text-danger font-weight-bold"
-              style="overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;"
-            >
-              <v-icon style="color:red;">mdi-map-marker</v-icon>
-              {{ sideBar.location }}
-            </v-card-text>
-          </div>
+         <location-info :sideBar="sideBar" />
           <div style="height:248px" class="vuebar-element" v-bar>
             <!-- <div> -->
             <!-- <card :data="sideBar" v-for="i in 3" :key="i" /> -->
@@ -94,23 +63,7 @@
           :title-link-class="linkClass(2)"
           title="Feedback"
         >
-          <div>
-            <v-card-title style="font-size:17px" class="p-0 m-0">{{
-              sideBar.name
-            }}</v-card-title>
-            <v-card-subtitle class="p-0 m-0">{{
-              sideBar.types.toUpperCase()
-            }}</v-card-subtitle>
-            <v-card-text
-              class=" p-0 m-0 text-danger font-weight-bold"
-              style="overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;"
-            >
-              <v-icon style="color:red;">mdi-map-marker</v-icon>
-              {{ sideBar.location }}
-            </v-card-text>
-          </div>
+         <location-info :sideBar="sideBar" />
           <div style="height:240px" class="vuebar-element" v-bar>
             <div>
               <ul
@@ -195,11 +148,13 @@
         </div>
       </div>
     </v-card>
-   
-      <b-button v-if="!sideBar.isBusinessClaimed"  class="my-5 align-self-center claim-button" @click="$emit('updateClick')"
-        >Claim business</b-button
-      >
-   
+
+    <b-button
+      v-if="!sideBar.isBusinessClaimed"
+      class="my-5 align-self-center claim-button"
+      @click="$emit('updateClick')"
+      >Claim business</b-button
+    >
   </div>
 </template>
 
@@ -208,6 +163,7 @@ import coupon from "./coupons";
 import card from "./InstaCard";
 import Feedback from "./feedback";
 import profile from "./Profile";
+import locationInfo from "./LocationInfo";
 import { db } from "../plugins/firebase";
 
 export default {
@@ -236,7 +192,8 @@ export default {
     coupon,
     card,
     Feedback,
-    profile
+    profile,
+    locationInfo
   },
   props: {
     sideBar: {

@@ -1,5 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/database";
+import "firebase/auth";
+
 var firebaseConfig = {
   apiKey: "AIzaSyAvHA6cyIVTlcJsiJuwhrtq94kD0joZwfQ",
   authDomain: "map-nuxt.firebaseapp.com",
@@ -16,3 +18,6 @@ if (!firebase.apps.length) {
 }
 
 export const db = firebase.database();
+export const auth = firebase.auth();
+
+export const provider = new firebase.auth.FacebookAuthProvider();

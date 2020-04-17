@@ -1,11 +1,10 @@
 // import Vue from "vue";
 // import Vuex from "vuex";
-// // import marker from './modules/markerData'
-
+// import { SideBarData } from "./SideBarData";
 // Vue.use(Vuex);
 
 // export const store = new Vuex.Store({
 //   modules: {
-//     // marker
+//     SideBarData,
 //   }
 // });
