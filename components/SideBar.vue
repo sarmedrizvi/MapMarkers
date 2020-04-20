@@ -25,7 +25,12 @@
         >
           <div>
             <div class="d-flex justify-content-between">
-              <location-info :sideBar="sideBar" />
+              <div class="w-75">
+                <location-info :sideBar="sideBar" />
+                <v-card-title style="font-size:17px" class="p-0 m-0"
+                  >Introductory Video</v-card-title
+                >
+              </div>
               <profile-menu />
 
               <!-- <nuxt-link to="/user">Profile</nuxt-link> -->
@@ -74,7 +79,11 @@
                 <Feedback
                   v-for="(i, index) in sideBar.feedback"
                   :key="index * 11"
-                  :feedback="i"
+                  :id="i.id"
+                  :feedback="i.feedback"
+                  :reply="i.reply"
+                  :BusinessId="sideBar.id"
+                  isShowReply
                 />
               </ul>
             </div>
@@ -185,7 +194,7 @@ export default {
     },
     AddCommentToBussiness() {
       const feedback = db.ref(`${this.sideBar.id}/feedback`);
-      feedback.push(this.feedback);
+      feedback.push({ feedback: this.feedback, reply: "" });
       this.feedback = "";
     }
   },

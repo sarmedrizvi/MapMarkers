@@ -7,7 +7,6 @@
         class="grey lighten-2"
         max-width="500"
         max-height="100"
-        
         style="border-bottom-left-radius: 100px;border-bottom-right-radius: 100px;"
       ></v-img>
     </v-row>
@@ -16,16 +15,25 @@
     >
       <v-avatar size="70">
         <img
-          src="https://cdn.vuetifyjs.com/images/john.jpg"
+          :src="
+            UserDetails.photoURL || '../assets/images/default-picture-dp.jpg'
+          "
           alt="John"
           style="border:3px white solid"
         />
       </v-avatar>
-      <p class="m-0 text-24 ">{{ sideBar.name }}</p>
+      <p
+        class="m-0 text-20 font-weight-bold text-center w-75"
+        style="overflow: hidden ;text-overflow: ellipsis; white-space: nowrap"
+      >
+        {{ sideBar.name }}
+      </p>
       <p class="font-weight-bold m-0 text-danger font-size-small">
         {{ sideBar.types }}
       </p>
-      <p class="font-size-small">{{sideBar.location}} | +9233-7263727</p>
+      <p class="font-size-small text-center">
+        {{ sideBar.location }} | +9233-7263727
+      </p>
     </div>
     <div class="d-flex justify-content-center">
       <v-avatar size="36" color="#1A237E" class="mx-2">
@@ -54,9 +62,17 @@
 
 <script>
 export default {
+  data() {
+    return {};
+  },
   props: {
     sideBar: {
       type: Object
+    }
+  },
+  computed: {
+    UserDetails() {
+      return this.$store.state.SideBarData.sideBarUser;
     }
   }
 };

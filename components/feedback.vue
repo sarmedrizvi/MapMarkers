@@ -5,7 +5,7 @@
         <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
       </v-avatar>
     </template>
-    
+
     <div class="d-flex justify-content-between">
       <div>
         <h5 class="mt-0 mb-1 colorTheme text-5">Nicole Woods</h5>
@@ -15,13 +15,20 @@
               "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin."
           }}
         </p>
+        <p
+          v-if="isShowReply && reply"
+          class="mb-0 font-weight-dark text-break m-0"
+          style="font-size:12px"
+        >
+          Reply :
+          {{ reply }}
+        </p>
         <b-input-group class="mb-3" type="text" v-if="isReply">
-          <b-form-input></b-form-input>
+          <b-form-input v-model="replyText"></b-form-input>
           <b-input-group-append>
-            <b-button variant="outline-secondary"   
+            <b-button variant="outline-secondary" @click="AddReply"
               >Reply</b-button
             >
-            
           </b-input-group-append>
         </b-input-group>
       </div>
@@ -43,6 +50,8 @@
 
 <script>
 import color from "../contants/color";
+import { db } from "../plugins/firebase";
+
 export default {
   props: {
     feedback: {
@@ -50,9 +59,40 @@ export default {
     },
     isReply: {
       type: Boolean
+    },
+    id: {
+      type: String
+    },
+    reply: {
+      type: String
+    },
+    BusinessId: {
+      type: String
+    },
+    isShowReply: {
+      type: Boolean
     }
   },
-  data: () => ({})
+  data: () => ({
+    replyText: ""
+  }),
+  methods: {
+    AddReply() {
+      if (this.replyText) {
+        const feed = db.ref(`${this.BusinessId}/feedback/${this.id}`);
+        feed.on("value", snap => {
+          feed.set({
+            ...snap.val(),
+            reply: this.replyText
+          });
+        });
+        // this.reply = this.replyText;
+        this.replyText = "";
+      } else {
+        this.replyText = "";
+      }
+    }
+  }
 };
 </script>
 

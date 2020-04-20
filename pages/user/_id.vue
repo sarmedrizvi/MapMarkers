@@ -16,7 +16,7 @@
             <add-video :paramsId="paramsId" />
           </v-col>
           <v-col md="6" cols="12">
-            <feedback />
+            <feedback :paramsId="paramsId" />
           </v-col>
         </v-row>
       </div>

@@ -7,10 +7,9 @@
       <div>
         <v-row>
           <v-col md="6" cols="12" v-for="(video, index) in videos" :key="index">
-            <v-icon style="cursor:pointer" @click="deleteVideo(index)"
+            <v-icon style="cursor:pointer" @click="deleteVideo(video.id)"
               >mdi-delete-empty</v-icon
             >
-
             <b-embed
               type="iframe"
               aspect="16by9"
@@ -46,6 +45,11 @@ export default {
   computed: {
     UserDetails() {
       return this.$store.state.SideBarData.sideBarUser;
+    }
+  },
+  methods: {
+    deleteVideo(id) {
+      db.ref(`BusinessProfile/${this.paramsId}/embededVideos/${id}`).remove();
     }
   },
   mounted() {

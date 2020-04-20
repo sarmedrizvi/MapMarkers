@@ -7,7 +7,7 @@
           v-model="nameSearch"
           size="md"
           class="webSearch"
-          placeholder="Search Name"
+          placeholder="Search By Name"
           type="text"
           @keydown.enter="
             () => {
@@ -56,9 +56,14 @@
     <b-form-input
       size="sm"
       class="mobSearch"
-      placeholder="Search Type"
+      placeholder="Search By Name"
       type="text"
-      @keydown.enter="addMarker"
+      @keydown.enter="
+        () => {
+          addMarkers();
+          selected = [];
+        }
+      "
       v-model="nameSearch"
     ></b-form-input>
     <div style="position: relative;" class="overflow-hidden">
@@ -162,7 +167,7 @@ import footerCustom from "./footer";
 import categories from "./categories";
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
-import { db } from "../plugins/firebase";
+  import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
 import temp from "./Skeleton";
 import bussinessForm from "./bussinessForm";
@@ -258,7 +263,7 @@ export default {
         if (data) {
           this.sideBarData.feedback = [];
           Object.keys(data).map(item => {
-            this.sideBarData.feedback.push(data[item]);
+            this.sideBarData.feedback.push({ id: item, ...data[item] });
           });
         }
       });

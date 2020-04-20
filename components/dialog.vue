@@ -6,18 +6,15 @@
       </v-btn>
     </div>
     <div v-if="inputShow">
-      <b-input-group>
-        <b-form-input required v-model="embeded" type="text"></b-form-input>
+      <b-form @submit="AddVideoToFirebase">
+        <b-input-group>
+          <b-form-input required v-model="embeded" type="text"></b-form-input>
 
-        <b-input-group-append>
-          <b-button
-            variant="outline-secondary"
-            type="submit"
-            @click="AddVideoToFirebase"
-            >Add</b-button
-          >
-        </b-input-group-append>
-      </b-input-group>
+          <b-input-group-append>
+            <b-button variant="outline-secondary" type="submit">Add</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form>
     </div>
   </div>
 </template>
