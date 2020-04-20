@@ -1,14 +1,9 @@
 <template>
-  <div>
-    <v-card-title style="font-size:17px" class="p-0 m-0">{{
+  <div class="w-75">
+    <v-card-text class="p-0 m-0 font-weight-bold" style="font-size:17px;overflow: hidden ;text-overflow: ellipsis; white-space: nowrap ">{{
       sideBar.name
-    }}</v-card-title>
-    <v-card-text
-      class=" p-0 m-0 text-danger font-weight-bold"
-      style="overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;"
-    >
+    }}</v-card-text>
+    <v-card-text class=" p-0 m-0 text-danger font-weight-bold" style="overflow: hidden ;text-overflow: ellipsis; white-space: nowrap ">
       <v-icon style="color:red;">mdi-map-marker</v-icon>
       {{ sideBar.location }}
     </v-card-text>
@@ -28,4 +23,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+.headingSmall {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+</style>

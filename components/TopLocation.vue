@@ -11,17 +11,6 @@
           type="text"
           @keydown.enter="addMarker"
         ></b-form-input>
-        <!-- <v-autocomplete
-          v-model="values"
-          :items="types"
-          outlined
-          dense
-          chips
-          small-chips
-          label="Search type"
-          class="webSearch"
-          multiple
-        ></v-autocomplete> -->
         <b-button
           href="#"
           variant="light"
@@ -33,17 +22,7 @@
       </div>
 
       <loading :isLoading="isloading" />
-      <!-- <b-card-text>{{ address }}</b-card-text> -->
-      <!-- <b-form-group>
-        <b-form-checkbox-group
-          id="checkbox-group-1"
-          v-model="selected"
-          :options="types"
-          name="flavour-1"
-        ></b-form-checkbox-group>
-      </b-form-group>
-      <b-card-text>{{ loadingMarker }}</b-card-text> -->
-      <!--   -->
+     
       <b-button ref="markButton" style="display:none"></b-button>
 
       <b-toast
@@ -179,6 +158,7 @@ import temp from "./Skeleton";
 import bussinessForm from "./bussinessForm";
 import axios from "axios";
 import { mapActions } from "vuex";
+import defaultPicture from "../assets/images/default-picture.png";
 export default {
   components: {
     sideBar,
@@ -251,7 +231,9 @@ export default {
         ...this.sideBarData,
         types: data.types,
         name: data.name,
-        picture: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${data.pictureRef}&key=${this.$myApi}`,
+        picture: data.pictureRef
+          ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${data.pictureRef}&key=${this.$myApi}`
+          : defaultPicture,
         location: data.location,
         social: {
           likes: data.likes,
@@ -271,7 +253,7 @@ export default {
         }
       });
 
-      db.ref(`BusinessDetails/${this.sideBarData.id}`).on("value", snap => {
+      db.ref(`ClaimBusiness/${this.sideBarData.id}`).on("value", snap => {
         if (snap.val()) {
           this.sideBarData.isBusinessClaimed = true;
         } else {
@@ -279,18 +261,15 @@ export default {
         }
       });
 
-      db.ref(`BusinessDetails/${this.sideBarData.id}/facebookLogin`).on(
-        "value",
-        snap => {
-          if (snap.val()) {
-            this.AddUser({
-              ...snap.val()
-            });
-          } else {
-            this.AddUser({});
-          }
+      db.ref(`BusinessProfile/${this.sideBarData.id}`).on("value", snap => {
+        if (snap.val()) {
+          this.AddUser({
+            ...snap.val()
+          });
+        } else {
+          this.AddUser({});
         }
-      );
+      });
 
       this.sideBar({ ...this.sideBarData });
     },
@@ -389,28 +368,30 @@ export default {
               this.isloading = false;
               console.log(data);
               if (data.data.next_page_token) {
-                console.log("it has next");
-                axios
-                  .get(
-                    `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}&pagetoken=${data.data.next_page_token}
-`
-                  )
-                  .then(marker => {
-                    data.data.results.map(marker => {
-                      this.markers.push({
-                        position: {
-                          lat: marker.geometry.location.lat,
-                          lng: marker.geometry.location.lng
-                        },
-                        name: marker.name,
-                        id: marker.id,
-                        types: marker.types[0],
-                        pictureRef: marker.photos[0]?.photo_reference,
-                        location: marker.vicinity
-                      });
-                      this.loadingMarker = "Markers are Added";
-                    });
-                  });
+                
+//                 axios
+//                   .get(
+//                     `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}&pagetoken=${data.data.next_page_token}
+// `
+//                   )
+//                   .then(marker => {
+//                     data.data.results.map(marker => {
+//                       this.markers.push({
+//                         position: {
+//                           lat: marker.geometry.location.lat,
+//                           lng: marker.geometry.location.lng
+//                         },
+//                         name: marker.name,
+//                         id: marker.id,
+//                         types: marker.types[0],
+//                         pictureRef: marker.photos
+//                           ? marker.photos[0].photo_reference
+//                           : null,
+//                         location: marker.vicinity
+//                       });
+//                       this.loadingMarker = "Markers are Added";
+//                     });
+//                   });
               }
               data.data.results.map(marker => {
                 this.markers.push({

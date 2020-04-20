@@ -5,6 +5,7 @@
         <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
       </v-avatar>
     </template>
+    
     <div class="d-flex justify-content-between">
       <div>
         <h5 class="mt-0 mb-1 colorTheme text-5">Nicole Woods</h5>
@@ -14,12 +15,13 @@
               "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin."
           }}
         </p>
-        <b-input-group class="mb-3" prepend="Reply" type="text" v-if="isReply">
+        <b-input-group class="mb-3" type="text" v-if="isReply">
           <b-form-input></b-form-input>
           <b-input-group-append>
-            <b-button variant="outline-secondary" @click="inputShow = false"
-              >Add</b-button
+            <b-button variant="outline-secondary"   
+              >Reply</b-button
             >
+            
           </b-input-group-append>
         </b-input-group>
       </div>

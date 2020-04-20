@@ -1,5 +1,13 @@
 <template>
   <div class="main-content d-flex flex-column ">
+    <b-toast
+      id="error-toast"
+      variant="warning"
+      title="Network Issue"
+      no-auto-hide
+    >
+      Something Went Wrong
+    </b-toast>
     <v-card class="py-1">
       <b-tabs
         class="p-0 mx-2"
@@ -16,8 +24,12 @@
           class="p-0 m-1"
         >
           <div>
-            <location-info :sideBar="sideBar" />
-             <nuxt-link to="/user">Profile</nuxt-link>
+            <div class="d-flex justify-content-between">
+              <location-info :sideBar="sideBar" />
+              <profile-menu />
+
+              <!-- <nuxt-link to="/user">Profile</nuxt-link> -->
+            </div>
             <div style="height:210px" class="vuebar-element" v-bar>
               <b-embed
                 type="iframe"
@@ -33,7 +45,7 @@
           :title-link-class="linkClass(1)"
           title="Wall"
         >
-         <location-info :sideBar="sideBar" />
+          <location-info :sideBar="sideBar" />
           <div style="height:248px" class="vuebar-element" v-bar>
             <iframe
               src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=300&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
@@ -51,7 +63,7 @@
           :title-link-class="linkClass(2)"
           title="Feedback"
         >
-         <location-info :sideBar="sideBar" />
+          <location-info :sideBar="sideBar" />
           <div style="height:240px" class="vuebar-element" v-bar>
             <div>
               <ul
@@ -152,6 +164,7 @@ import card from "./InstaCard";
 import Feedback from "./feedback";
 import profile from "./Profile";
 import locationInfo from "./LocationInfo";
+import profileMenu from "./profileMenu";
 import { db } from "../plugins/firebase";
 
 export default {
@@ -181,7 +194,8 @@ export default {
     card,
     Feedback,
     profile,
-    locationInfo
+    locationInfo,
+    profileMenu
   },
   props: {
     sideBar: {

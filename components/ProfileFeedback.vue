@@ -1,8 +1,10 @@
 <template>
-  <v-card style="height:70vh;overflow-y:scroll">
+  <v-card>
     <v-card-title>Feedback</v-card-title>
-    <div class="px-2">
-      <feedback v-for="(item,index) in 10" :isReply='true' :key="index"/>
+    <div style="height:70vh" class="profile-feedback" v-bar>
+      <div class="px-2">
+        <feedback v-for="(item, index) in 10" :isReply="true" :key="index" />
+      </div>
     </div>
   </v-card>
 </template>
@@ -16,4 +18,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.profile-feedback {
+  width: 100%;
+  background: white;
+}
+</style>

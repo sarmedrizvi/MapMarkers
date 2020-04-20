@@ -8,16 +8,15 @@
         @click="$emit('updateClick')"
         >mdi-arrow-left</v-icon
       >
-      <div class="d-flex justify-content-center">
-       
-        <b-button variant="danger"  v-if="fbShow" @click="facebookAuth"
+      <!-- <div class="d-flex justify-content-center">
+        <b-button variant="danger" v-if="fbShow" @click="facebookAuth"
           >Login as facebook</b-button
         >
-      </div>
+      </div> -->
       <b-form
         @submit="onSubmit"
         @reset="onReset"
-        v-if="show && $store.state.SideBarData.sideBarUser !== {}"
+
       >
         <b-form-group
           id="input-group-3"
@@ -47,7 +46,7 @@
           id="input-group-2"
           label="Your Phone Number:"
           label-for="input-2"
-          description="format: 0342-9999999"
+          description="format: 03XX-XXXXXXX"
         >
           <b-form-input
             id="input-2"
@@ -107,64 +106,9 @@ export default {
     };
   },
   methods: {
-    facebookAuth() {
-      auth
-        .signInWithPopup(provider)
-        .then(result => {
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          const token = result.credential.accessToken;
-          // The signed-in user info.
-          const {
-            uid,
-            displayName,
-            photoURL,
-            phoneNumber,
-            emailVerified,
-            email
-          } = result.user;
-          // ...
-          this.AddUser({
-            uid,
-            displayName,
-            email,
-            phoneNumber,
-            photoURL,
-            emailVerified
-          });
-          db.ref(`BusinessDetails/${this.sideBar.id}/facebookLogin`).on(
-            "value",
-            snap => {
-              if (snap.val()) {
-                alert("Already Registered");
-              } else {
-                db.ref(`BusinessDetails/${this.sideBar.id}/facebookLogin`).set({
-                  ...this.$store.state.SideBarData.sideBarUser
-                });
-                this.show = true;
-                this.fbShow = false;
-              }
-            }
-          );
-
-          // console.log(this.$store.state.SideBarData.sideBarUser, "No");
-        })
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-          console.log(error);
-        });
-    },
+   
     onSubmit(evt) {
       evt.preventDefault();
-      // this.form.businessName = this.sideBar.name;
-      // this.form.businessType = this.sideBar.type;
-      // this.form.location = this.sideBar.location;
       this.form = {
         ...this.form,
         businessName: this.sideBar.name,
@@ -172,7 +116,7 @@ export default {
         location: this.sideBar.location
       };
       //   alert(JSON.stringify(this.form));
-      const bussinessFormRef = db.ref(`/BusinessDetails/${this.sideBar.id}`);
+      const bussinessFormRef = db.ref(`/ClaimBusiness/${this.sideBar.id}`);
       bussinessFormRef
         .set({
           ...this.form

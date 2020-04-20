@@ -7,10 +7,13 @@
     </div>
     <div v-if="inputShow">
       <b-input-group>
-        <b-form-input type="text"></b-form-input>
+        <b-form-input required v-model="embeded" type="text"></b-form-input>
 
         <b-input-group-append>
-          <b-button variant="outline-secondary" @click="inputShow = false"
+          <b-button
+            variant="outline-secondary"
+            type="submit"
+            @click="AddVideoToFirebase"
             >Add</b-button
           >
         </b-input-group-append>
@@ -20,11 +23,28 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { db, auth, provider } from "../plugins/firebase";
 export default {
+  props: {
+    paramsId: {
+      type: String
+    }
+  },
   data() {
     return {
-      inputShow: false
+      inputShow: false,
+      embeded: ""
     };
+  },
+  methods: {
+    AddVideoToFirebase(evt) {
+      evt.stopPropagation();
+      this.inputShow = false;
+      db.ref(`BusinessProfile/${this.paramsId}/embededVideos`).push(
+        this.embeded
+      );
+    }
   }
 };
 </script>
