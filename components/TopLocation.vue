@@ -4,25 +4,35 @@
       <div class="d-flex justify-content-between">
         <b-card-title>Live location</b-card-title>
         <b-form-input
-          v-model="typeSearch"
+          v-model="nameSearch"
           size="md"
           class="webSearch"
-          placeholder="Search Type"
+          placeholder="Search Name"
           type="text"
-          @keydown.enter="addMarker"
+          @keydown.enter="
+            () => {
+              addMarkers();
+              selected = [];
+            }
+          "
         ></b-form-input>
         <b-button
           href="#"
           variant="light"
           style="color:#f5393a"
           class="px-4"
-          @click="addMarkers"
+          @click="
+            () => {
+              addMarkers();
+              selected = [];
+            }
+          "
           >Locate</b-button
         >
       </div>
 
       <loading :isLoading="isloading" />
-     
+
       <b-button ref="markButton" style="display:none"></b-button>
 
       <b-toast
@@ -49,7 +59,7 @@
       placeholder="Search Type"
       type="text"
       @keydown.enter="addMarker"
-      v-model="typeSearch"
+      v-model="nameSearch"
     ></b-form-input>
     <div style="position: relative;" class="overflow-hidden">
       <!-- <b-sidebar
@@ -64,7 +74,7 @@
         id="map"
         ref="mapRef"
         :center="{ lat: latitude, lng: longitude }"
-        :zoom="18"
+        :zoom="15"
         map-type-id="terrain"
         style="width: 100%; height: 75vh;"
       >
@@ -170,7 +180,7 @@ export default {
   },
   data() {
     return {
-      typeSearch: null,
+      nameSearch: null,
       drawer: false,
       isSideBar: true,
       hide: false,
@@ -339,24 +349,28 @@ export default {
         </div>`;
     },
     addMarkers() {
-      if (this.typeSearch) {
-        this.selected.push(this.typeSearch?.toLowerCase());
-      }
       console.log(this.selected);
       this.markers = [];
-      const request = {
+      let request = {
         location: this.latitude + "," + this.longitude,
         radius: "1000",
         types: this.selected.toString(),
         // fields: ["name", "geometry"],
         api: this.$myApi
       };
-      if (this.selected.length != 0) {
+      if (this.nameSearch) {
+        request = { ...request, name: this.nameSearch };
+      }
+      if (this.selected.length != 0 || this.nameSearch != "") {
         this.isloading = true;
         this.loadingMarker = "Loading...";
         axios
           .get(
-            `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}`
+            `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${
+              request.location
+            }&radius=${request.radius}&name=${
+              request.name ? request.name : ""
+            }&types=${request.types}&key=${request.api}`
           )
           .then(data => {
             if (data.data.error_message) {
@@ -368,30 +382,29 @@ export default {
               this.isloading = false;
               console.log(data);
               if (data.data.next_page_token) {
-                
-//                 axios
-//                   .get(
-//                     `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}&pagetoken=${data.data.next_page_token}
-// `
-//                   )
-//                   .then(marker => {
-//                     data.data.results.map(marker => {
-//                       this.markers.push({
-//                         position: {
-//                           lat: marker.geometry.location.lat,
-//                           lng: marker.geometry.location.lng
-//                         },
-//                         name: marker.name,
-//                         id: marker.id,
-//                         types: marker.types[0],
-//                         pictureRef: marker.photos
-//                           ? marker.photos[0].photo_reference
-//                           : null,
-//                         location: marker.vicinity
-//                       });
-//                       this.loadingMarker = "Markers are Added";
-//                     });
-//                   });
+                //                 axios
+                //                   .get(
+                //                     `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${request.location}&radius=${request.radius}&types=${request.types}&key=${request.api}&pagetoken=${data.data.next_page_token}
+                // `
+                //                   )
+                //                   .then(marker => {
+                //                     data.data.results.map(marker => {
+                //                       this.markers.push({
+                //                         position: {
+                //                           lat: marker.geometry.location.lat,
+                //                           lng: marker.geometry.location.lng
+                //                         },
+                //                         name: marker.name,
+                //                         id: marker.id,
+                //                         types: marker.types[0],
+                //                         pictureRef: marker.photos
+                //                           ? marker.photos[0].photo_reference
+                //                           : null,
+                //                         location: marker.vicinity
+                //                       });
+                //                       this.loadingMarker = "Markers are Added";
+                //                     });
+                //                   });
               }
               data.data.results.map(marker => {
                 this.markers.push({
@@ -408,6 +421,7 @@ export default {
                   location: marker.vicinity
                 });
                 this.loadingMarker = "Markers are Added";
+                this.nameSearch = "";
               });
             }
           })
