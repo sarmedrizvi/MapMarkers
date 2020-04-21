@@ -30,17 +30,14 @@ import feedback from "../../components/ProfileFeedback";
 import profileForm from "../../components/ProfileForm";
 import addVideo from "../../components/AddVideo";
 export default {
-  //   validate({ params }) {
-  //     // Must be a number
-  //     return /^\d+$/.test(params.id);
-  //   },
+ 
   data() {
     return {
       paramsId: null,
       items: [
         {
           text: "Map",
-          href: "#"
+          href: "/"
         },
         {
           text: "Business Profile",
@@ -53,6 +50,9 @@ export default {
     profileForm,
     addVideo,
     feedback
+  },
+  mounted() {
+   
   },
   created() {
     this.paramsId = this.$route.params.id;

@@ -7,8 +7,8 @@
       offset-x
     >
       <template v-slot:activator="{ on }">
-        <v-btn color="#f5393a" dark v-on="on">
-          Acc
+        <v-btn color="#f5393a" icon dark v-on="on">
+          <v-icon>mdi-account-details</v-icon>
         </v-btn>
       </template>
 

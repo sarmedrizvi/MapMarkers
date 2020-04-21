@@ -1,10 +1,22 @@
 export default {
+  loading: {
+    color: "blue",
+    height: "5px"
+  },
+  layoutTransition: {
+    name: "layout",
+    mode: "out-in"
+  },
+  transition: {
+    name: 'test',
+    mode: 'out-in'
+  },
   mode: "universal",
   /*
    ** Headers of the page
    */
   head: {
-    title: "Location" || "",
+    title: "Save SMB" || "",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -28,27 +40,22 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/vue2-location" },'~/plugins/vue-bar'],
+  plugins: [{ src: "~/plugins/vue2-location" }, "~/plugins/vue-bar"],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    '@nuxtjs/vuetify',
-  ],
+  buildModules: ["@nuxtjs/vuetify"],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    "bootstrap-vue/nuxt",
-
+    "bootstrap-vue/nuxt"
   ],
   /*
    ** Build configuration
    */
   build: {
-    
-   
     /*
      ** You can extend webpack config here
      */

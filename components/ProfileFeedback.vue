@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <v-card-title>Feedback</v-card-title>
-    <div style="height:70vh" class="profile-feedback" v-bar>
-      <div class="px-2" v-if="firebaseFeedback.length !== 0">
+    <div style="height:70vh" class="profile-feedback px-2" v-bar>
+      <div class="" v-if="firebaseFeedback.length !== 0">
         <feedback
           v-for="(i, index) in firebaseFeedback"
           :id="i.id"
@@ -13,7 +13,7 @@
           :key="index"
         />
       </div>
-      <h3 v-else>No Feedback</h3>
+      <h3 v-else class="text-muted">No Feedback</h3>
     </div>
   </v-card>
 </template>

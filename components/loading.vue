@@ -2,7 +2,7 @@
   <div class="vld-parent">
     <loading
       loader="dots"
-      color="red"
+      color="#f5393a"
       :active.sync="isLoading"
       :on-cancel="onCancel"
       :is-full-page="fullPage"

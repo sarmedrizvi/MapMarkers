@@ -1,11 +1,14 @@
 <template>
   <div style="">
-    <b-card style="background-color:#f5393a" text-variant="white">
+    <b-card style="background-color: #f5393a;" text-variant="white">
       <div class="d-flex justify-content-between">
-        <b-card-title>Live location</b-card-title>
+        <b-card-title class="p-0 m-0 d-flex align-items-center"
+          >SaveSMB</b-card-title
+        >
         <b-form-input
           v-model="nameSearch"
           size="md"
+          v-if="!gridView"
           class="webSearch"
           placeholder="Search By Name"
           type="text"
@@ -16,11 +19,13 @@
             }
           "
         ></b-form-input>
+
         <b-button
           href="#"
+          v-if="!gridView"
           variant="light"
-          style="color:#f5393a"
-          class="px-4"
+          style="color: #f5393a;"
+          class="px-4 webSearch"
           @click="
             () => {
               addMarkers();
@@ -29,11 +34,15 @@
           "
           >Locate</b-button
         >
+        <v-btn icon color="white">
+          <v-icon v-if="!gridView" @click="gridView = true"> mdi-grid </v-icon>
+          <v-icon v-else @click="gridView = false"> mdi-grid-off </v-icon>
+        </v-btn>
       </div>
 
       <loading :isLoading="isloading" />
 
-      <b-button ref="markButton" style="display:none"></b-button>
+      <b-button ref="markButton" style="display: none;"></b-button>
 
       <b-toast
         id="error-toast"
@@ -46,8 +55,9 @@
     </b-card>
     <categories
       :selectedCategories="selected"
+      v-if="!gridView"
       @SelectedChanged="
-        value => {
+        (value) => {
           selected = [...value];
           addMarkers();
         }
@@ -75,13 +85,15 @@
         class="sidebar"
       >
       </b-sidebar> -->
+
       <GmapMap
         id="map"
         ref="mapRef"
         :center="{ lat: latitude, lng: longitude }"
         :zoom="15"
         map-type-id="terrain"
-        style="width: 100%; height: 75vh;"
+        style="width: 100%; height: 80vh;"
+        v-if="!gridView"
       >
         <gmap-circle
           :center="{ lat: latitude, lng: longitude }"
@@ -91,7 +103,7 @@
 
             strokeColor: 'rgba(74, 164, 255, 0.5)',
             fillOpacity: 1,
-            strokeOpacity: 0.8
+            strokeOpacity: 0.8,
           }"
         >
         </gmap-circle>
@@ -103,7 +115,7 @@
 
             strokeColor: '#208dfa',
             fillOpacity: 0.35,
-            strokeOpacity: 0.8
+            strokeOpacity: 0.8,
           }"
         >
         </gmap-circle>
@@ -134,11 +146,15 @@
           <div v-html="infoContent"></div>
         </gmap-info-window>
       </GmapMap>
+      <div v-else>
+        <grid-view />
+      </div>
       <v-navigation-drawer
         v-model="drawer"
         absolute
         right
         temporary
+        v-if="drawer"
         class="navigate"
       >
         <div v-bar class="vuebar-location">
@@ -158,6 +174,7 @@
         </div>
       </v-navigation-drawer>
     </div>
+
     <footerCustom />
   </div>
 </template>
@@ -167,13 +184,14 @@ import footerCustom from "./footer";
 import categories from "./categories";
 import loading from "./loading";
 import { gmapApi } from "~/node_modules/vue2-google-maps/src/main";
-  import { db } from "../plugins/firebase";
+import { db } from "../plugins/firebase";
 import sideBar from "./SideBar";
 import temp from "./Skeleton";
 import bussinessForm from "./bussinessForm";
 import axios from "axios";
 import { mapActions } from "vuex";
 import defaultPicture from "../assets/images/default-picture.png";
+import gridView from "../layouts/gridview";
 export default {
   components: {
     sideBar,
@@ -181,10 +199,12 @@ export default {
     loading,
     bussinessForm,
     categories,
-    footerCustom
+    footerCustom,
+    gridView,
   },
   data() {
     return {
+      gridView: false,
       nameSearch: null,
       drawer: false,
       isSideBar: true,
@@ -201,7 +221,7 @@ export default {
         { text: "Hospital", value: "hospital" },
         { text: "Medicine", value: "medicine" },
         { text: "Food", value: "food" },
-        { text: "Education", value: "education" }
+        { text: "Education", value: "education" },
       ],
       address: "",
       markers: [],
@@ -209,15 +229,15 @@ export default {
       infoContent: "",
       infoWindowPos: {
         lat: 0,
-        lng: 0
+        lng: 0,
       },
       infoWinOpen: false,
       currentMidx: null,
       infoOptions: {
         pixelOffset: {
           width: 0,
-          height: -35
-        }
+          height: -35,
+        },
       },
       sideBarData: {
         picture: "",
@@ -225,19 +245,19 @@ export default {
         social: {
           likes: "",
           views: "",
-          coupons: ""
+          coupons: "",
         },
         feedback: [],
-        isBusinessClaimed: null
+        isBusinessClaimed: null,
       },
       loading: true,
-      transition: "scale-transition"
+      transition: "scale-transition",
     };
   },
   methods: {
     ...mapActions({
       AddUser: "SideBarData/AddUser",
-      sideBar: "SideBarData/AddSideBar"
+      sideBar: "SideBarData/AddSideBar",
     }),
     sideBarOpen(m, id) {
       setTimeout(() => (this.drawer = !this.drawer), 200);
@@ -253,22 +273,22 @@ export default {
         social: {
           likes: data.likes,
           views: data.views,
-          coupons: data.coupons
+          coupons: data.coupons,
         },
-        id: data.id
+        id: data.id,
       };
 
-      db.ref(`${this.sideBarData.id}/feedback`).on("value", snap => {
+      db.ref(`${this.sideBarData.id}/feedback`).on("value", (snap) => {
         const data = snap.val();
         if (data) {
           this.sideBarData.feedback = [];
-          Object.keys(data).map(item => {
+          Object.keys(data).map((item) => {
             this.sideBarData.feedback.push({ id: item, ...data[item] });
           });
         }
       });
 
-      db.ref(`ClaimBusiness/${this.sideBarData.id}`).on("value", snap => {
+      db.ref(`ClaimBusiness/${this.sideBarData.id}`).on("value", (snap) => {
         if (snap.val()) {
           this.sideBarData.isBusinessClaimed = true;
         } else {
@@ -276,10 +296,10 @@ export default {
         }
       });
 
-      db.ref(`BusinessProfile/${this.sideBarData.id}`).on("value", snap => {
+      db.ref(`BusinessProfile/${this.sideBarData.id}`).on("value", (snap) => {
         if (snap.val()) {
           this.AddUser({
-            ...snap.val()
+            ...snap.val(),
           });
         } else {
           this.AddUser({});
@@ -320,17 +340,17 @@ export default {
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
         )
 
-        .then(data => {
+        .then((data) => {
           if (data.error_message) {
             console.log(data.error_message);
           } else {
-            console.log(data);
+            // console.log(data);
             this.address = data.results[0].formatted_address;
           }
         })
         .catch(console.log);
     },
-    getInfoWindowContent: function(marker) {
+    getInfoWindowContent: function (marker) {
       return `<div class="">
           <div>
             <div>
@@ -361,7 +381,7 @@ export default {
         radius: "1000",
         types: this.selected.toString(),
         // fields: ["name", "geometry"],
-        api: this.$myApi
+        api: this.$myApi,
       };
       if (this.nameSearch) {
         request = { ...request, name: this.nameSearch };
@@ -377,7 +397,7 @@ export default {
               request.name ? request.name : ""
             }&types=${request.types}&key=${request.api}`
           )
-          .then(data => {
+          .then((data) => {
             if (data.data.error_message) {
               this.isloading = false;
               this.$bvToast.show("error-toast");
@@ -411,11 +431,11 @@ export default {
                 //                     });
                 //                   });
               }
-              data.data.results.map(marker => {
+              data.data.results.map((marker) => {
                 this.markers.push({
                   position: {
                     lat: marker.geometry.location.lat,
-                    lng: marker.geometry.location.lng
+                    lng: marker.geometry.location.lng,
                   },
                   name: marker.name,
                   id: marker.id,
@@ -423,14 +443,14 @@ export default {
                   pictureRef: marker.photos
                     ? marker.photos[0].photo_reference
                     : null,
-                  location: marker.vicinity
+                  location: marker.vicinity,
                 });
                 this.loadingMarker = "Markers are Added";
                 this.nameSearch = "";
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             this.isloading = false;
             this.$bvToast.show("error-toast");
@@ -442,11 +462,11 @@ export default {
       }
     },
     fireBaseStore(marker, idx) {
-      db.ref("/" + marker.id).once("value", snapshot => {
+      db.ref("/" + marker.id).once("value", (snapshot) => {
         if (snapshot.val()) {
           db.ref("/" + marker.id)
             .update({
-              views: snapshot.val().views + 1
+              views: snapshot.val().views + 1,
             })
             .then(() => {
               this.getMarkerData(marker.id, idx);
@@ -456,7 +476,7 @@ export default {
             .set({
               views: parseInt(500 + Math.random() * 1000),
               likes: parseInt(300 + Math.random() * 400),
-              coupons: parseInt(30 + Math.random() * 200)
+              coupons: parseInt(30 + Math.random() * 200),
             })
             .then(() => {
               this.getMarkerData(marker.id, idx);
@@ -467,15 +487,15 @@ export default {
     getMarkerData(id, idx) {
       db.ref("/" + id)
         .once("value")
-        .then(snapshot => {
+        .then((snapshot) => {
           // console.log({ ...this.markers[idx], ...snapshot.val() })
           this.markers[idx] = { ...this.markers[idx], ...snapshot.val() };
           this.infoContent = this.getInfoWindowContent(this.markers[idx]);
         });
-    }
+    },
   },
   computed: {
-    google: gmapApi
+    google: gmapApi,
   },
   created() {},
   mounted() {
@@ -484,7 +504,7 @@ export default {
     } else {
       this.liveLocation = "Geolocation is not supported by this browser.";
     }
-  }
+  },
 };
 </script>
 <style>
@@ -500,7 +520,8 @@ export default {
   }
 }
 .webSearch {
-  width: 75vw !important;
+  /* display: flex; */
+  /* width: 75vw !important; */
 }
 .navigate {
   width: 400px !important;
