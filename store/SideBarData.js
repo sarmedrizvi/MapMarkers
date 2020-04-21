@@ -1,6 +1,7 @@
-  export const state = () => ({
+export const state = () => ({
   sideBarUser: {},
-  sideBarData: {}
+  sideBarData: {},
+  drawer: false
 });
 
 export const getters = {
@@ -15,6 +16,12 @@ export const mutations = {
   },
   MutateSideBar(state, payload) {
     state.sideBarData = payload;
+  },
+  MutateDrawer(state, payload) {
+    state.drawer = payload;
+  },
+  MutateFeedback(state, payload) {
+    state.sideBarData.feedback.push(payload);
   }
 };
 
@@ -24,6 +31,12 @@ export const actions = {
   },
   AddSideBar({ commit }, payload) {
     commit("MutateSideBar", payload);
+  },
+  DrawerChange({ commit }, payload) {
+    commit("MutateDrawer", payload);
+  },
+  AddFeedback({ commit }, payload) {
+    commit("MutateFeedback", payload);
   }
 };
 

@@ -150,17 +150,19 @@
         <grid-view />
       </div>
       <v-navigation-drawer
-        v-model="drawer"
-        absolute
+        v-model="getDrawer"
+        fixed=""
+        app
         right
+        clipped=""
         temporary
-        v-if="drawer"
+        v-if="getDrawer"
         class="navigate"
       >
         <div v-bar class="vuebar-location">
           <div>
             <side-bar
-              :sideBar="sideBarData"
+              
               :isSideBar="isSideBar"
               @updateClick="() => (isSideBar = false)"
               v-if="isSideBar"
@@ -173,9 +175,8 @@
           </div>
         </div>
       </v-navigation-drawer>
+      <footerCustom />
     </div>
-
-    <footerCustom />
   </div>
 </template>
 
@@ -258,9 +259,10 @@ export default {
     ...mapActions({
       AddUser: "SideBarData/AddUser",
       sideBar: "SideBarData/AddSideBar",
+      changeDrawer: "SideBarData/DrawerChange",
     }),
     sideBarOpen(m, id) {
-      setTimeout(() => (this.drawer = !this.drawer), 200);
+      setTimeout(() => this.changeDrawer(true), 200);
       const data = this.markers[id];
       this.sideBarData = {
         ...this.sideBarData,
@@ -496,6 +498,14 @@ export default {
   },
   computed: {
     google: gmapApi,
+    getDrawer: {
+      get() {
+        return this.$store.state.SideBarData.drawer;
+      },
+      set(value) {
+        this.$store.dispatch("SideBarData/DrawerChange", value);
+      },
+    },
   },
   created() {},
   mounted() {

@@ -26,7 +26,7 @@
 
     <v-tabs v-model="tab" class="tabsCard" centered color="#f5393a">
       <v-tab
-        @click="getContent(item.tab, index)"
+        @change="getContent(item.tab, index)"
         v-for="(item, index) in items"
         :key="item.tab"
       >
@@ -45,11 +45,7 @@
               v-for="(res, index) in item.content"
               :key="index"
             >
-              <card
-                :text="res.types"
-                :picture="res.pictureRef"
-                :title="res.name"
-              />
+              <card :sideBar="res" />
             </v-col>
           </v-row>
 
@@ -125,10 +121,11 @@ export default {
               name: marker.name,
               id: marker.id,
               types: marker.types[0],
-              pictureRef: marker.photos
+              picture: marker.photos
                 ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&maxheight=200&photoreference=${marker.photos[0].photo_reference}&key=${this.$myApi}`
                 : defaultPicture,
-              location: marker.vicinity
+              location: marker.vicinity,
+              feedback: []
             });
           });
           this.isloading = false;
@@ -149,7 +146,11 @@ export default {
 
         .then(data => {
           if (data.error_message) {
-            this.$bvToast.show("error-toast");
+            this.$bvToast.toast(`Cannot get location`, {
+              title: "Location Error",
+              autoHideDelay: 5000,
+              appendToast: append
+            });
           } else {
             // console.log(data);
             const address_comp = data.data.results[0].address_components;
@@ -161,7 +162,11 @@ export default {
           }
         })
         .catch(err => {
-          this.$bvToast.show("error-toast");
+          this.$bvToast.toast(`Cannot get location`, {
+            title: "Location Error",
+            autoHideDelay: 5000,
+            appendToast: append
+          });
         });
     }
   },

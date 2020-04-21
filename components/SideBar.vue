@@ -75,7 +75,7 @@
                 style="display:flex;flex-direction:column-reverse"
                 class="list-unstyled"
               >
-                <Feedback v-for="i in 10" :key="i" />
+                <!-- <Feedback v-for="i in 10" :key="i" /> -->
                 <Feedback
                   v-for="(i, index) in sideBar.feedback"
                   :key="index * 11"
@@ -175,7 +175,7 @@ import profile from "./Profile";
 import locationInfo from "./LocationInfo";
 import profileMenu from "./profileMenu";
 import { db } from "../plugins/firebase";
-
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -185,6 +185,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      Addfeedback: "SideBarData/AddFeedback"
+    }),
     linkClass(idx) {
       if (this.tabIndex === idx) {
         return ["bg-secondary", "text-white", "px-2"];
@@ -194,7 +197,11 @@ export default {
     },
     AddCommentToBussiness() {
       const feedback = db.ref(`${this.sideBar.id}/feedback`);
-      feedback.push({ feedback: this.feedback, reply: "" });
+     
+      const key = feedback.push({ feedback: this.feedback, reply: "" }).key;
+      
+      // this.Addfeedback({ id: key, feedback: this.feedback, reply: "" });
+
       this.feedback = "";
     }
   },
@@ -207,14 +214,15 @@ export default {
     profileMenu
   },
   props: {
-    sideBar: {
-      type: Object
-    },
     isSideBar: {
       type: Boolean
     }
   },
-  computed: {},
+  computed: {
+    sideBar() {
+      return this.$store.state.SideBarData.sideBarData;
+    }
+  },
   created() {}
 };
 </script>
