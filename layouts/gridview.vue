@@ -21,7 +21,7 @@
       </h5>
     </div>
     <div class="d-flex justify-content-center">
-      <search />
+      <search :address="address" />
     </div>
 
     <v-tabs v-model="tab" class="tabsCard" centered color="#f5393a">
@@ -37,10 +37,10 @@
       <v-tab-item v-for="item in items" :key="item.tab">
         <v-card flat>
           <!-- <v-card-text>{{ item.content }}</v-card-text> -->
-          <v-row v-if="item.content">
+          <v-row v-if="item.content.length !== 0">
             <v-col
               md="4"
-              xl="6"
+              xl="2"
               lg="3"
               v-for="(res, index) in item.content"
               :key="index"
@@ -74,6 +74,11 @@ export default {
       longitude: "",
       isloading: false,
       tab: null,
+      address: {
+        city: "",
+        country: "",
+        place: ""
+      },
       items: [
         { tab: "restaurant", content: [] },
         { tab: "hospital", content: [] },
@@ -129,7 +134,7 @@ export default {
           this.isloading = false;
         }
       } catch (error) {
-        // this.$bvToast.show("error-toast");
+        this.$bvToast.show("error-toast");
         console.log(error);
         this.isloading = false;
       }
@@ -137,6 +142,27 @@ export default {
     showPosition(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
+      axios
+        .get(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
+        )
+
+        .then(data => {
+          if (data.error_message) {
+            this.$bvToast.show("error-toast");
+          } else {
+            // console.log(data);
+            const address_comp = data.data.results[0].address_components;
+            this.address.country =
+              address_comp[address_comp.length - 1].long_name;
+            this.address.city = address_comp[address_comp.length - 5].long_name;
+            this.address.place =
+              address_comp[address_comp.length - 6].long_name;
+          }
+        })
+        .catch(err => {
+          this.$bvToast.show("error-toast");
+        });
     }
   },
 
