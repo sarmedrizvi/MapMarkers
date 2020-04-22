@@ -106,11 +106,13 @@ export default {
           //     const imageUrl = URL.createObjectURL(res);
           //     user = { ...user, photoURL: imageUrl };
           //   });
+          console.log(user)
           const {
             uid,
             displayName,
             photoURL,
             phoneNumber,
+           
             emailVerified,
             email
           } = user;

@@ -30,7 +30,7 @@
         {{ sideBar.types }}
       </p>
       <p class="font-size-small text-center">
-        {{ sideBar.location }} | +9233-7263727
+        {{ sideBar.location }} | {{UserDetails.phoneNumber}}
       </p>
     </div>
     <div class="d-flex justify-content-center">
