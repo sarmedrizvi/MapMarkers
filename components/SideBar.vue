@@ -10,9 +10,10 @@
     </b-toast>
     <v-card class="py-1">
       <b-tabs
-        class="p-0 mx-2"
+        class="p-0 mx-2 font"
         card
         top
+        style="font-size:0.9em"
         v-model="tabIndex"
         content-class="tabs"
         fill
@@ -72,7 +73,7 @@
             <div>
               <ul
                 style="display:flex;flex-direction:column-reverse"
-                class="list-unstyled"
+                class="list-unstyled p-0 m-0"
               >
                 <!-- <Feedback v-for="i in 10" :key="i" /> -->
                 <Feedback

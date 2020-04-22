@@ -36,7 +36,7 @@
       </v-tabs>
    
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items touchless v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
         <v-card flat>
           <!-- <v-card-text>{{ item.content }}</v-card-text> -->
