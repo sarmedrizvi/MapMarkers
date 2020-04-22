@@ -41,15 +41,11 @@ export default {
           icon: "hospital-building"
         },
         {
-          name: "medicines",
-          icon: "pill"
-        },
-        {
           name: "food",
           icon: "noodles"
         },
         {
-          name: "education",
+          name: "school",
           icon: "school"
         }
       ]

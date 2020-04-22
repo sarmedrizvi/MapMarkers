@@ -1,28 +1,33 @@
 <template>
-  <b-input-group class="mt-3 searchbarlenght  text-center font">
-    <template v-slot:append>
-      <input
-        v-model="address.country"
-        type="text"
-        placeholder="Country"
-        class="textInput"
-      />
-      <input
-        v-model="address.city"
-        type="text"
-        placeholder="city"
-        class="textInput"
-      />
-      <v-btn color="#f5393a" dark style="cursor:pointer">
-        <v-icon color="white">mdi-magnify</v-icon>
-      </v-btn>
-    </template>
-    <b-form-input
-      v-model="address.place"
-      placeholder="place"
-      class="textInput"
-    ></b-form-input>
-  </b-input-group>
+  <v-sheet elevation="2" class="searchbarlenght">
+    <b-input-group class="text-center font">
+      <template v-slot:append>
+        <p class="font-weight-bold d-flex align-items-center mb-1">|</p>
+        <input
+          v-model="address.country"
+          type="text"
+          placeholder="Country"
+          class="textInput"
+        />
+         <p class="font-weight-bold d-flex align-items-center mb-1">|</p>
+        <input
+          v-model="address.city"
+          type="text"
+          placeholder="city"
+          class="textInput"
+        />
+        <v-btn color="#f5393a" dark class="h-100" style="border-radius:0px">
+          <v-icon color="white">mdi-magnify</v-icon>
+        </v-btn>
+      </template>
+      <b-form-input
+        style="border:0px;"
+        v-model="address.place"
+        placeholder="place"
+        class="textInput mr-2 "
+      ></b-form-input>
+    </b-input-group>
+  </v-sheet>
 </template>
 
 <script>
@@ -52,6 +57,7 @@ export default {
   text-align: center;
   width: 90px;
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.322);
+  /* border-radius: 20px; */
+  /* border-left: 1px solid rgba(0, 0, 0, 0.322); */
 }
 </style>

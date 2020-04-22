@@ -13,26 +13,29 @@
     <div
       class="d-flex justify-content-center w-100 flex-column align-items-center font px-2"
     >
-      <h2 class="color text-center font-weight-bold">
+      <h2 class="color text-center font-weight-bold mb-5">
         Your favorite Bay Area restaurant might close forever. Help save it.
       </h2>
-      <h5 class=" font-weight-lighter text-muted">
+      <h5 class=" font-weight-lighter text-muted mb-5">
         Gift Cards help "flatten the curve" of lost income from COVID-19
       </h5>
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center my-7">
       <search :address="address" />
     </div>
 
-    <v-tabs v-model="tab" class="tabsCard" centered color="#f5393a">
-      <v-tab
-        @change="getContent(item.tab, index)"
-        v-for="(item, index) in items"
-        :key="item.tab"
-      >
-        {{ item.tab }}
-      </v-tab>
-    </v-tabs>
+   
+      <v-tabs v-model="tab" class="tabsCard mb-10" centered color="#f5393a">
+        <v-tab
+          @change="getContent(item.tab, index)"
+          v-for="(item, index) in items"
+          :key="item.tab"
+        >
+          <v-icon class="pr-2">mdi-{{ item.icon }}</v-icon> {{ item.tab }}
+        </v-tab>
+      </v-tabs>
+   
+
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
         <v-card flat>
@@ -53,6 +56,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
+    <grid-footer />
   </div>
 </template>
 
@@ -63,6 +67,7 @@ import loading from "../components/loading";
 import skeleton from "../components/Skeleton";
 import axios from "axios";
 import defaultPicture from "@/assets/images/default-picture.png";
+import gridFooter from "../components/gridView/gridFooter";
 export default {
   data() {
     return {
@@ -76,11 +81,11 @@ export default {
         place: ""
       },
       items: [
-        { tab: "restaurant", content: [] },
-        { tab: "hospital", content: [] },
-        { tab: "gym", content: [] },
-        { tab: "school", content: [] },
-        { tab: "Cinema", content: [] }
+        { tab: "restaurant", icon: "warehouse", content: [] },
+        { tab: "gym", icon: "dumbbell", content: [] },
+        { tab: "hospital", icon: "hospital-building", content: [] },
+        { tab: "food", icon: "noodles", content: [] },
+        { tab: "school", icon: "school", content: [] }
       ]
     };
   },
@@ -88,7 +93,8 @@ export default {
     search,
     card,
     loading,
-    skeleton
+    skeleton,
+    gridFooter
   },
   methods: {
     async getContent(category, id) {
@@ -128,7 +134,7 @@ export default {
               feedback: []
             });
           });
-         
+
           this.isloading = false;
         }
       } catch (error) {
@@ -160,8 +166,8 @@ export default {
             this.address.city = address_comp[address_comp.length - 5].long_name;
             this.address.place =
               address_comp[address_comp.length - 6].long_name;
-              
-               this.getContent("restaurant", 0);
+
+            this.getContent("restaurant", 0);
           }
         })
         .catch(err => {
@@ -173,9 +179,7 @@ export default {
         });
     }
   },
-  created() {
-   
-  },
+  created() {},
   mounted() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.showPosition);
@@ -187,8 +191,16 @@ export default {
 </script>
 
 <style>
+.tabsContainer {
+  display: flex;
+  /* border: 1px solid ; */
+  padding: 10px 10px;
+  box-shadow: 5px 5px 2px 5px #888888;
+}
 .tabsCard {
   margin-top: 20px;
+  /* box-shadow: 5px 10px;
+  width: 74% !important; */
   /* display: flex;
   justify-content: center;
   align-items: center; */
