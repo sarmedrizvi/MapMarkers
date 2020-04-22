@@ -2,7 +2,7 @@
   <b-media tag="li">
     <template v-slot:aside>
       <v-avatar>
-        <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+        <img src="../assets/images/default-picture-dp.jpg" alt="John" />
       </v-avatar>
     </template>
 
