@@ -11,9 +11,9 @@
       Something Went Wrong
     </b-toast>
     <div
-      class="d-flex justify-content-center w-100 flex-column align-items-center font"
+      class="d-flex justify-content-center w-100 flex-column align-items-center font px-2"
     >
-      <h2 class="color text-center w-50 font-weight-bold">
+      <h2 class="color text-center font-weight-bold">
         Your favorite Bay Area restaurant might close forever. Help save it.
       </h2>
       <h5 class=" font-weight-lighter text-muted">
@@ -128,6 +128,7 @@ export default {
               feedback: []
             });
           });
+         
           this.isloading = false;
         }
       } catch (error) {
@@ -159,6 +160,8 @@ export default {
             this.address.city = address_comp[address_comp.length - 5].long_name;
             this.address.place =
               address_comp[address_comp.length - 6].long_name;
+              
+               this.getContent("restaurant", 0);
           }
         })
         .catch(err => {
@@ -170,7 +173,9 @@ export default {
         });
     }
   },
-
+  created() {
+   
+  },
   mounted() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.showPosition);

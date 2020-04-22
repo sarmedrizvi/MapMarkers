@@ -52,14 +52,17 @@ export default {
       AddUser: "SideBarData/AddUser",
       AddSideBarData: "SideBarData/AddSideBar",
       changeDrawer: "SideBarData/DrawerChange",
-      AddFeedback: "SideBarData/AddFeedback"
+      AddFeedback: "SideBarData/AddFeedback",
+      ClearFeedback: "SideBarData/ClearFeedback"
     }),
     openSlider() {
       setTimeout(() => this.changeDrawer(true), 200);
+
       this.AddSideBarData({ ...this.sideBar });
       db.ref(`${this.sideBar.id}/feedback`).on("value", snap => {
         const data = snap.val();
         if (data) {
+          this.ClearFeedback();
           Object.keys(data).map(item => {
             this.AddFeedback({ id: item, ...data[item] });
           });

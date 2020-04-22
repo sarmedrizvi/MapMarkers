@@ -35,8 +35,12 @@
           >Locate</b-button
         >
         <v-btn icon color="white">
-          <v-icon v-if="!gridView" @click="gridView = true"> mdi-grid </v-icon>
-          <v-icon v-else @click="gridView = false"> mdi-grid-off </v-icon>
+          <v-icon v-if="!gridView" @click="gridView = true">
+            mdi-grid
+          </v-icon>
+          <v-icon v-else @click="gridView = false">
+            mdi-grid-off
+          </v-icon>
         </v-btn>
       </div>
 
@@ -57,7 +61,7 @@
       :selectedCategories="selected"
       v-if="!gridView"
       @SelectedChanged="
-        (value) => {
+        value => {
           selected = [...value];
           addMarkers();
         }
@@ -66,6 +70,7 @@
     <b-form-input
       size="sm"
       class="mobSearch"
+      v-if="!gridView"
       placeholder="Search By Name"
       type="text"
       @keydown.enter="
@@ -85,70 +90,74 @@
         class="sidebar"
       >
       </b-sidebar> -->
-
-      <GmapMap
-        id="map"
-        ref="mapRef"
-        :center="{ lat: latitude, lng: longitude }"
-        :zoom="15"
-        map-type-id="terrain"
-        style="width: 100%; height: 80vh;"
-        v-if="!gridView"
-      >
-        <gmap-circle
+      <transition name="slide-fade">
+        <GmapMap
+          id="map"
+          key="1"
+          ref="mapRef"
           :center="{ lat: latitude, lng: longitude }"
-          :radius="3"
-          :options="{
-            fillColor: '#208dfa',
-
-            strokeColor: 'rgba(74, 164, 255, 0.5)',
-            fillOpacity: 1,
-            strokeOpacity: 0.8,
-          }"
+          :zoom="15"
+          map-type-id="terrain"
+          style="width: 100%; height: 80vh;"
+          v-if="!gridView"
         >
-        </gmap-circle>
-        <gmap-circle
-          :center="{ lat: latitude, lng: longitude }"
-          :radius="10"
-          :options="{
-            fillColor: 'rgba(74, 164, 255, 0.5)',
+          <gmap-circle
+            :center="{ lat: latitude, lng: longitude }"
+            :radius="3"
+            :options="{
+              fillColor: '#208dfa',
 
-            strokeColor: '#208dfa',
-            fillOpacity: 0.35,
-            strokeOpacity: 0.8,
-          }"
-        >
-        </gmap-circle>
-        <GmapMarker
-          v-for="(m, index) in markers"
-          :key="index"
-          :position="
-            google && new google.maps.LatLng(m.position.lat, m.position.lng)
-          "
-          :clickable="true"
-          :draggable="true"
-          @click="
-            () => {
-              $refs.markButton.click(m);
-              sideBarOpen(m, index);
-            }
-          "
-          @mouseover="markersHover(m, index)"
-          @mouseout="markerLeave"
-        />
+              strokeColor: 'rgba(74, 164, 255, 0.5)',
+              fillOpacity: 1,
+              strokeOpacity: 0.8
+            }"
+          >
+          </gmap-circle>
+          <gmap-circle
+            :center="{ lat: latitude, lng: longitude }"
+            :radius="10"
+            :options="{
+              fillColor: 'rgba(74, 164, 255, 0.5)',
 
-        <gmap-info-window
-          :options="infoOptions"
-          :position="infoWindowPos"
-          :opened="infoWinOpen"
-          @closeclick="infoWinOpen = false"
-        >
-          <div v-html="infoContent"></div>
-        </gmap-info-window>
-      </GmapMap>
-      <div v-else>
-        <grid-view />
-      </div>
+              strokeColor: '#208dfa',
+              fillOpacity: 0.35,
+              strokeOpacity: 0.8
+            }"
+          >
+          </gmap-circle>
+          <GmapMarker
+            v-for="(m, index) in markers"
+            :key="index"
+            :position="
+              google && new google.maps.LatLng(m.position.lat, m.position.lng)
+            "
+            :clickable="true"
+            :draggable="true"
+            @click="
+              () => {
+                $refs.markButton.click(m);
+                sideBarOpen(m, index);
+              }
+            "
+            @mouseover="markersHover(m, index)"
+            @mouseout="markerLeave"
+          />
+
+          <gmap-info-window
+            :options="infoOptions"
+            :position="infoWindowPos"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen = false"
+          >
+            <div v-html="infoContent"></div>
+          </gmap-info-window>
+        </GmapMap>
+      </transition>
+      <transition name="slide-fade">
+        <div>
+          <grid-view v-if="gridView" />
+        </div>
+      </transition>
       <v-navigation-drawer
         v-model="getDrawer"
         fixed=""
@@ -156,22 +165,16 @@
         right
         clipped=""
         temporary
-        v-if="getDrawer"
         class="navigate"
       >
         <div v-bar class="vuebar-location">
           <div>
             <side-bar
-              
               :isSideBar="isSideBar"
               @updateClick="() => (isSideBar = false)"
               v-if="isSideBar"
             />
-            <bussinessForm
-              v-else
-              @updateClick="() => (isSideBar = true)"
-              :sideBar="sideBarData"
-            />
+            <bussinessForm v-else @updateClick="() => (isSideBar = true)" />
           </div>
         </div>
       </v-navigation-drawer>
@@ -201,7 +204,7 @@ export default {
     bussinessForm,
     categories,
     footerCustom,
-    gridView,
+    gridView
   },
   data() {
     return {
@@ -222,7 +225,7 @@ export default {
         { text: "Hospital", value: "hospital" },
         { text: "Medicine", value: "medicine" },
         { text: "Food", value: "food" },
-        { text: "Education", value: "education" },
+        { text: "Education", value: "education" }
       ],
       address: "",
       markers: [],
@@ -230,15 +233,15 @@ export default {
       infoContent: "",
       infoWindowPos: {
         lat: 0,
-        lng: 0,
+        lng: 0
       },
       infoWinOpen: false,
       currentMidx: null,
       infoOptions: {
         pixelOffset: {
           width: 0,
-          height: -35,
-        },
+          height: -35
+        }
       },
       sideBarData: {
         picture: "",
@@ -246,13 +249,13 @@ export default {
         social: {
           likes: "",
           views: "",
-          coupons: "",
+          coupons: ""
         },
         feedback: [],
-        isBusinessClaimed: null,
+        isBusinessClaimed: null
       },
       loading: true,
-      transition: "scale-transition",
+      transition: "scale-transition"
     };
   },
   methods: {
@@ -260,9 +263,10 @@ export default {
       AddUser: "SideBarData/AddUser",
       sideBar: "SideBarData/AddSideBar",
       changeDrawer: "SideBarData/DrawerChange",
+      ClearFeedback: "SideBarData/ClearFeedback",
+      AddFeedback: "SideBarData/AddFeedback"
     }),
     sideBarOpen(m, id) {
-      setTimeout(() => this.changeDrawer(true), 200);
       const data = this.markers[id];
       this.sideBarData = {
         ...this.sideBarData,
@@ -275,22 +279,12 @@ export default {
         social: {
           likes: data.likes,
           views: data.views,
-          coupons: data.coupons,
+          coupons: data.coupons
         },
-        id: data.id,
+        id: data.id
       };
 
-      db.ref(`${this.sideBarData.id}/feedback`).on("value", (snap) => {
-        const data = snap.val();
-        if (data) {
-          this.sideBarData.feedback = [];
-          Object.keys(data).map((item) => {
-            this.sideBarData.feedback.push({ id: item, ...data[item] });
-          });
-        }
-      });
-
-      db.ref(`ClaimBusiness/${this.sideBarData.id}`).on("value", (snap) => {
+      db.ref(`ClaimBusiness/${this.sideBarData.id}`).on("value", snap => {
         if (snap.val()) {
           this.sideBarData.isBusinessClaimed = true;
         } else {
@@ -298,10 +292,10 @@ export default {
         }
       });
 
-      db.ref(`BusinessProfile/${this.sideBarData.id}`).on("value", (snap) => {
+      db.ref(`BusinessProfile/${this.sideBarData.id}`).on("value", snap => {
         if (snap.val()) {
           this.AddUser({
-            ...snap.val(),
+            ...snap.val()
           });
         } else {
           this.AddUser({});
@@ -309,6 +303,16 @@ export default {
       });
 
       this.sideBar({ ...this.sideBarData });
+      db.ref(`${data.id}/feedback`).on("value", snap => {
+        const data = snap.val();
+        if (data) {
+          this.ClearFeedback();
+          Object.keys(data).map(item => {
+            this.AddFeedback({ id: item, ...data[item] });
+          });
+        }
+      });
+      setTimeout(() => this.changeDrawer(true), 200);
     },
     markersHover(marker, idx) {
       // console.log(marker);
@@ -342,17 +346,17 @@ export default {
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.latitude},${this.longitude}&key=${this.$myApi}`
         )
 
-        .then((data) => {
+        .then(data => {
           if (data.error_message) {
             console.log(data.error_message);
           } else {
             // console.log(data);
-            this.address = data.results[0].formatted_address;
+            // this.address = data.results[0].formatted_address;
           }
         })
         .catch(console.log);
     },
-    getInfoWindowContent: function (marker) {
+    getInfoWindowContent: function(marker) {
       return `<div class="">
           <div>
             <div>
@@ -383,7 +387,7 @@ export default {
         radius: "1000",
         types: this.selected.toString(),
         // fields: ["name", "geometry"],
-        api: this.$myApi,
+        api: this.$myApi
       };
       if (this.nameSearch) {
         request = { ...request, name: this.nameSearch };
@@ -399,7 +403,7 @@ export default {
               request.name ? request.name : ""
             }&types=${request.types}&key=${request.api}`
           )
-          .then((data) => {
+          .then(data => {
             if (data.data.error_message) {
               this.isloading = false;
               this.$bvToast.show("error-toast");
@@ -433,11 +437,11 @@ export default {
                 //                     });
                 //                   });
               }
-              data.data.results.map((marker) => {
+              data.data.results.map(marker => {
                 this.markers.push({
                   position: {
                     lat: marker.geometry.location.lat,
-                    lng: marker.geometry.location.lng,
+                    lng: marker.geometry.location.lng
                   },
                   name: marker.name,
                   id: marker.id,
@@ -445,14 +449,14 @@ export default {
                   pictureRef: marker.photos
                     ? marker.photos[0].photo_reference
                     : null,
-                  location: marker.vicinity,
+                  location: marker.vicinity
                 });
                 this.loadingMarker = "Markers are Added";
                 this.nameSearch = "";
               });
             }
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
             this.isloading = false;
             this.$bvToast.show("error-toast");
@@ -464,11 +468,11 @@ export default {
       }
     },
     fireBaseStore(marker, idx) {
-      db.ref("/" + marker.id).once("value", (snapshot) => {
+      db.ref("/" + marker.id).once("value", snapshot => {
         if (snapshot.val()) {
           db.ref("/" + marker.id)
             .update({
-              views: snapshot.val().views + 1,
+              views: snapshot.val().views + 1
             })
             .then(() => {
               this.getMarkerData(marker.id, idx);
@@ -478,7 +482,7 @@ export default {
             .set({
               views: parseInt(500 + Math.random() * 1000),
               likes: parseInt(300 + Math.random() * 400),
-              coupons: parseInt(30 + Math.random() * 200),
+              coupons: parseInt(30 + Math.random() * 200)
             })
             .then(() => {
               this.getMarkerData(marker.id, idx);
@@ -489,12 +493,12 @@ export default {
     getMarkerData(id, idx) {
       db.ref("/" + id)
         .once("value")
-        .then((snapshot) => {
+        .then(snapshot => {
           // console.log({ ...this.markers[idx], ...snapshot.val() })
           this.markers[idx] = { ...this.markers[idx], ...snapshot.val() };
           this.infoContent = this.getInfoWindowContent(this.markers[idx]);
         });
-    },
+    }
   },
   computed: {
     google: gmapApi,
@@ -504,8 +508,11 @@ export default {
       },
       set(value) {
         this.$store.dispatch("SideBarData/DrawerChange", value);
-      },
+      }
     },
+    sideBarVuex() {
+      return this.$store.state.SideBarData.sideBarData;
+    }
   },
   created() {},
   mounted() {
@@ -514,10 +521,23 @@ export default {
     } else {
       this.liveLocation = "Geolocation is not supported by this browser.";
     }
-  },
+  }
 };
 </script>
 <style>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 .mobSearch {
   display: none;
 }

@@ -49,17 +49,15 @@
           style="height:388.5px"
           :title-link-class="linkClass(1)"
           title="Wall"
+          class="p-0 m-1"
         >
           <location-info :sideBar="sideBar" />
-          <div style="height:248px" class="vuebar-element" v-bar>
-            <iframe
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&width=300&height=290&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId"
-              style="border:none;overflow:hidden"
-              scrolling="no"
-              frameborder="0"
-              allowTransparency="true"
-              allow="encrypted-media"
-            ></iframe>
+          <div style="height:330px" class="vuebar-element" v-bar>
+            <b-embed
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F%2Fbizzworldcommunications%2F&tabs=timeline&small_header=true&show_facepile=true&appId"
+              type="iframe"
+              aspect="16by9"
+            ></b-embed>
             <!-- </div> -->
           </div>
         </b-tab>
@@ -67,9 +65,10 @@
           style="height:388.5px"
           :title-link-class="linkClass(2)"
           title="Feedback"
+          class="p-0 m-1"
         >
           <location-info :sideBar="sideBar" />
-          <div style="height:240px" class="vuebar-element" v-bar>
+          <div style="height:280px" class="vuebar-element" v-bar>
             <div>
               <ul
                 style="display:flex;flex-direction:column-reverse"
@@ -95,7 +94,7 @@
               type="text"
               @keydown.enter="AddCommentToBussiness"
             ></b-form-input>
-            <v-btn @click="AddCommentToBussiness"
+            <v-btn icon @click="AddCommentToBussiness"
               ><v-icon>mdi-send</v-icon></v-btn
             >
           </div>
@@ -104,6 +103,7 @@
           style="height:388.5px"
           :title-link-class="linkClass(3)"
           title="Profile"
+          class="p-0 m-1"
         >
           <div style="height:350px" class="vuebar-element" v-bar>
             <div>
@@ -196,13 +196,19 @@ export default {
       }
     },
     AddCommentToBussiness() {
-      const feedback = db.ref(`${this.sideBar.id}/feedback`);
-     
-      const key = feedback.push({ feedback: this.feedback, reply: "" }).key;
-      
-      // this.Addfeedback({ id: key, feedback: this.feedback, reply: "" });
+      if (this.feedback) {
+        const feedback = db.ref(`${this.sideBar.id}/feedback`);
 
-      this.feedback = "";
+        const key = feedback.push({ feedback: this.feedback, reply: "" }).key;
+
+        // this.Addfeedback({ id: key, feedback: this.feedback, reply: "" });
+
+        this.feedback = "";
+      } else {
+        this.$bvToast.toast("Should not be empty", {
+          title: "Reply is Empty"
+        });
+      }
     }
   },
   components: {

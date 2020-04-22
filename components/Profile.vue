@@ -15,9 +15,7 @@
     >
       <v-avatar size="70">
         <img
-          :src="
-            UserDetails.photoURL || '../assets/images/default-picture-dp.jpg'
-          "
+          :src="UserDetails.photoURL || dp"
           alt="John"
           style="border:3px white solid"
         />
@@ -61,9 +59,12 @@
 </template>
 
 <script>
+import dp from "../assets/images/default-picture-dp.jpg";
 export default {
   data() {
-    return {};
+    return {
+      dp
+    };
   },
   props: {
     sideBar: {

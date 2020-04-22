@@ -13,11 +13,7 @@
           >Login as facebook</b-button
         >
       </div> -->
-      <b-form
-        @submit="onSubmit"
-        @reset="onReset"
-
-      >
+      <b-form @submit="onSubmit" @reset="onReset">
         <b-form-group
           id="input-group-3"
           label="Your First Name:"
@@ -88,10 +84,7 @@ export default {
     locationInfo
   },
   props: {
-    sideBar: {
-      type: Object,
-      required: true
-    }
+   
   },
   data() {
     return {
@@ -106,7 +99,6 @@ export default {
     };
   },
   methods: {
-   
     onSubmit(evt) {
       evt.preventDefault();
       this.form = {
@@ -152,6 +144,9 @@ export default {
   },
   computed: {
     // ...mapGetters({ User: "SideBarData/BusinessUser" }),
+    sideBar() {
+      return this.$store.state.SideBarData.sideBarData;
+    }
   }
 };
 </script>

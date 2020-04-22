@@ -22,6 +22,9 @@ export const mutations = {
   },
   MutateFeedback(state, payload) {
     state.sideBarData.feedback.push(payload);
+  },
+  MutateClearFeedback(state) {
+    state.sideBarData.feedback = [];
   }
 };
 
@@ -37,6 +40,9 @@ export const actions = {
   },
   AddFeedback({ commit }, payload) {
     commit("MutateFeedback", payload);
+  },
+  ClearFeedback({ commit }) {
+    commit("MutateClearFeedback");
   }
 };
 

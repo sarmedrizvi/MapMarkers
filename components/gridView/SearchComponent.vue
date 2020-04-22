@@ -1,5 +1,5 @@
 <template>
-  <b-input-group class="mt-3 w-50 text-center font">
+  <b-input-group class="mt-3 searchbarlenght  text-center font">
     <template v-slot:append>
       <input
         v-model="address.country"
@@ -7,7 +7,12 @@
         placeholder="Country"
         class="textInput"
       />
-      <input v-model="address.city" type="text" placeholder="city" class="textInput" />
+      <input
+        v-model="address.city"
+        type="text"
+        placeholder="city"
+        class="textInput"
+      />
       <v-btn color="#f5393a" dark style="cursor:pointer">
         <v-icon color="white">mdi-magnify</v-icon>
       </v-btn>
@@ -28,17 +33,21 @@ export default {
     }
   },
   data() {
-    return {
-     
-    };
+    return {};
   },
-  created(){
-	
-  }
+  created() {}
 };
 </script>
 
 <style>
+@media screen and (max-width: 500px) {
+  .searchbarlenght {
+    width: 100% !important;
+  }
+}
+.searchbarlenght {
+  width: 50%;
+}
 .textInput {
   text-align: center;
   width: 90px;
