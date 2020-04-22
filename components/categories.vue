@@ -41,8 +41,8 @@ export default {
           icon: "hospital-building"
         },
         {
-          name: "food",
-          icon: "noodles"
+          name: "park",
+          icon: "beach"
         },
         {
           name: "school",

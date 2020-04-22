@@ -36,12 +36,13 @@
           >
         </div>
         <v-btn icon color="white">
-          <v-icon v-if="!gridView" @click="gridView = true">
+          <v-icon id='gridtooltip' v-if="!gridView" @click="gridView = true">
             mdi-grid
           </v-icon>
-          <v-icon v-else @click="gridView = false">
+          <v-icon id="gridtooltip" v-else @click="gridView = false">
             mdi-grid-off
           </v-icon>
+          <b-tooltip target="gridtooltip">Grid</b-tooltip>
         </v-btn>
       </div>
 
@@ -412,7 +413,7 @@ export default {
               this.loadingMarker = "Something Went Wrong";
             } else {
               this.isloading = false;
-              console.log(data);
+              
               if (data.data.next_page_token) {
                 //                 axios
                 //                   .get(

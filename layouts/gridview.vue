@@ -86,7 +86,7 @@ export default {
         { tab: "restaurant", icon: "warehouse", content: [] },
         { tab: "gym", icon: "dumbbell", content: [] },
         { tab: "hospital", icon: "hospital-building", content: [] },
-        { tab: "food", icon: "noodles", content: [] },
+        { tab: "park", icon: "beach", content: [] },
         { tab: "school", icon: "school", content: [] }
       ]
     };
