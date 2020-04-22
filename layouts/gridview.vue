@@ -44,7 +44,9 @@
             <v-col
               md="4"
               xl="2"
+              sm="6"
               lg="3"
+              cols="12"
               v-for="(res, index) in item.content"
               :key="index"
             >

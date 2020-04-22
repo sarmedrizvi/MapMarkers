@@ -5,35 +5,36 @@
         <b-card-title class="p-0 m-0 d-flex align-items-center"
           >SaveSMB</b-card-title
         >
-        <b-form-input
-          v-model="nameSearch"
-          size="md"
-          v-if="!gridView"
-          class="webSearch"
-          placeholder="Search By Name"
-          type="text"
-          @keydown.enter="
-            () => {
-              addMarkers();
-              selected = [];
-            }
-          "
-        ></b-form-input>
+        <div class="d-flex " v-if="!gridView">
+          <b-form-input
+            v-model="nameSearch"
+            size="md"
+            class="webSearch mx-3"
+            style="width:30em"
+            placeholder="Search By Name"
+            type="text"
+            @keydown.enter="
+              () => {
+                addMarkers();
+                selected = [];
+              }
+            "
+          ></b-form-input>
 
-        <b-button
-          href="#"
-          v-if="!gridView"
-          variant="light"
-          style="color: #f5393a;"
-          class="px-4 webSearch"
-          @click="
-            () => {
-              addMarkers();
-              selected = [];
-            }
-          "
-          >Locate</b-button
-        >
+          <b-button
+            href="#"
+            variant="light"
+            style="color: #f5393a;"
+            class="px-4 webSearch"
+            @click="
+              () => {
+                addMarkers();
+                selected = [];
+              }
+            "
+            >Locate</b-button
+          >
+        </div>
         <v-btn icon color="white">
           <v-icon v-if="!gridView" @click="gridView = true">
             mdi-grid
